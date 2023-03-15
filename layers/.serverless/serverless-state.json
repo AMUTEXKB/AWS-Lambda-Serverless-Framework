@@ -1,0 +1,170 @@
+{
+  "service": {
+    "service": "pioneers-layers",
+    "serviceObject": {
+      "name": "pioneers-layers"
+    },
+    "provider": {
+      "name": "aws",
+      "stage": "dev",
+      "region": "us-east-1",
+      "deploymentBucket": "pioneers-serverless-deployment-bucket-kb",
+      "runtime": "python3.9",
+      "versionFunctions": true,
+      "deploymentBucketObject": {
+        "name": "pioneers-serverless-deployment-bucket-kb",
+        "serverSideEncryption": "AES256"
+      },
+      "compiledCloudFormationTemplate": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "The AWS CloudFormation template for this Serverless application",
+        "Resources": {
+          "CommonLambdaLayer": {
+            "Type": "AWS::Lambda::LayerVersion",
+            "Properties": {
+              "Content": {
+                "S3Bucket": "pioneers-serverless-deployment-bucket-kb",
+                "S3Key": "serverless/pioneers-layers/dev/1678847070695-2023-03-15T02:24:30.695Z/common.zip"
+              },
+              "LayerName": "pioneers-layers-dev-common"
+            }
+          },
+          "AuthorizerLambdaLayer": {
+            "Type": "AWS::Lambda::LayerVersion",
+            "Properties": {
+              "Content": {
+                "S3Bucket": "pioneers-serverless-deployment-bucket-kb",
+                "S3Key": "serverless/pioneers-layers/dev/1678847070695-2023-03-15T02:24:30.695Z/authorizer.zip"
+              },
+              "LayerName": "pioneers-layers-dev-authorizer"
+            }
+          }
+        },
+        "Outputs": {
+          "ServerlessDeploymentBucketName": {
+            "Value": "pioneers-serverless-deployment-bucket-kb",
+            "Export": {
+              "Name": "sls-pioneers-layers-dev-ServerlessDeploymentBucketName"
+            }
+          },
+          "CommonLambdaLayerQualifiedArn": {
+            "Description": "Current Lambda layer version",
+            "Value": {
+              "Ref": "CommonLambdaLayer"
+            },
+            "Export": {
+              "Name": "sls-pioneers-layers-dev-CommonLambdaLayerQualifiedArn"
+            }
+          },
+          "CommonLambdaLayerHash": {
+            "Description": "Current Lambda layer hash",
+            "Value": "c9eb8b6400fb46699aeb99d0c75dd7d52e65efc9",
+            "Export": {
+              "Name": "sls-pioneers-layers-dev-CommonLambdaLayerHash"
+            }
+          },
+          "CommonLambdaLayerS3Key": {
+            "Description": "Current Lambda layer S3Key",
+            "Value": "serverless/pioneers-layers/dev/1678847070695-2023-03-15T02:24:30.695Z/common.zip",
+            "Export": {
+              "Name": "sls-pioneers-layers-dev-CommonLambdaLayerS3Key"
+            }
+          },
+          "AuthorizerLambdaLayerQualifiedArn": {
+            "Description": "Current Lambda layer version",
+            "Value": {
+              "Ref": "AuthorizerLambdaLayer"
+            },
+            "Export": {
+              "Name": "sls-pioneers-layers-dev-AuthorizerLambdaLayerQualifiedArn"
+            }
+          },
+          "AuthorizerLambdaLayerHash": {
+            "Description": "Current Lambda layer hash",
+            "Value": "01c26a9f1ce91abc49046cbe4f876b9ad396f91b",
+            "Export": {
+              "Name": "sls-pioneers-layers-dev-AuthorizerLambdaLayerHash"
+            }
+          },
+          "AuthorizerLambdaLayerS3Key": {
+            "Description": "Current Lambda layer S3Key",
+            "Value": "serverless/pioneers-layers/dev/1678847070695-2023-03-15T02:24:30.695Z/authorizer.zip",
+            "Export": {
+              "Name": "sls-pioneers-layers-dev-AuthorizerLambdaLayerS3Key"
+            }
+          },
+          "layerPrefix": {
+            "Value": "pioneers-layers-dev"
+          }
+        }
+      }
+    },
+    "custom": {
+      "STAGE": "dev",
+      "REGION": "us-east-1",
+      "DEPLOYMENT_BUCKET": "pioneers-serverless-deployment-bucket-kb",
+      "ACCOUNT_ID": "${AWS::AccountId}",
+      "PREFIX": "pioneers-layers-dev"
+    },
+    "plugins": [
+      "serverless-deployment-bucket"
+    ],
+    "pluginsData": {},
+    "functions": {},
+    "resources": {
+      "Outputs": {
+        "layerPrefix": {
+          "Value": "pioneers-layers-dev"
+        }
+      },
+      "Resources": {}
+    },
+    "configValidationMode": "warn",
+    "serviceFilename": "serverless.yml",
+    "initialServerlessConfig": {
+      "service": "pioneers-layers",
+      "frameworkVersion": "3",
+      "useDotenv": true,
+      "custom": {
+        "$ref": "$[\"service\"][\"custom\"]"
+      },
+      "plugins": {
+        "$ref": "$[\"service\"][\"plugins\"]"
+      },
+      "provider": {
+        "$ref": "$[\"service\"][\"provider\"]"
+      },
+      "layers": {
+        "authorizer": {
+          "name": "pioneers-layers-dev-authorizer",
+          "path": "authorizer",
+          "retain": false,
+          "package": {
+            "artifact": "C:\\Users\\DELL\\Downloads\\aws_lambdas\\layers\\.serverless\\authorizer.zip"
+          },
+          "artifactAlreadyUploaded": true
+        },
+        "common": {
+          "name": "pioneers-layers-dev-common",
+          "path": "common",
+          "retain": false,
+          "package": {
+            "artifact": "C:\\Users\\DELL\\Downloads\\aws_lambdas\\layers\\.serverless\\common.zip"
+          },
+          "artifactAlreadyUploaded": true
+        }
+      },
+      "resources": {
+        "$ref": "$[\"service\"][\"resources\"]"
+      }
+    },
+    "layers": {
+      "$ref": "$[\"service\"][\"initialServerlessConfig\"][\"layers\"]"
+    },
+    "isDashboardMonitoringPreconfigured": false
+  },
+  "package": {
+    "artifactDirectoryName": "serverless/pioneers-layers/dev/1678854955740-2023-03-15T04:35:55.740Z",
+    "artifact": ""
+  }
+}

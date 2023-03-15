@@ -1,0 +1,129 @@
+service: pioneers-job-application
+frameworkVersion: '3'
+useDotenv: true
+
+package:
+  individually: True
+  
+custom:
+  STAGE: ${opt:stage}
+  REGION: ${env:REGION}
+  DEPLOYMENT_BUCKET: ${env:DEPLOYMENT_BUCKET}
+  ACCOUNT_ID: ${AWS::AccountId}
+  PREFIX: ${self:service}-${self:custom.STAGE}
+  AUTHORIZER_ARN: ${param:AUTHORIZER_ARN}
+  LAYER_PREFIX: ${self:custom.PREFIX}-layer
+
+plugins:
+  - serverless-deployment-bucket
+  - serverless-latest-layer-version
+layers:
+  helpers:
+    name: ${self:custom.PREFIX}-helpers
+    path: helpers
+    retain: false
+
+provider:
+  name: aws
+  stage: ${self:custom.STAGE}
+  region: ${self:custom.REGION}
+  deploymentBucket:
+    name: ${self:custom.DEPLOYMENT_BUCKET}
+    serverSideEncryption: AES256
+  runtime: python3.9
+  environment:
+    JOB_APPLICATION_TABLE_NAME: !Ref JobApplicationsTable
+    ATTACHMENTS_BUCKET: pioneers-education-attachments-${self:custom.STAGE}
+
+functions:
+
+  create-application:
+    handler: handlers/create_application.lambda_handler
+    layers:
+      - arn:aws:lambda:${self:custom.REGION}:#{AWS::AccountId}:layer:pioneers-layers-dev-common:latest
+    package:
+      exclude:
+      - "./**"
+      include:
+      - "handlers/create_application.py"
+      - "helpers/**"
+    timeout: 30
+    role: !GetAtt LambdaRole.Arn
+    events:
+      - http:
+          path: user/{user_id}/job_application/
+          method: POST
+          authorizer:
+            arn: ${self:custom.AUTHORIZER_ARN}
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Authorization
+            name: jwt
+            type: token
+          cors:
+            origin: "*"
+            headers: "*"
+            allowCredentials: true
+
+resources:
+  Resources:
+    JobApplicationsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: job_applications
+        AttributeDefinitions: 
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: job_id
+            AttributeType: S
+        KeySchema: 
+          - AttributeName: id
+            KeyType: HASH
+          - AttributeName: job_id
+            KeyType: RANGE
+        GlobalSecondaryIndexes:
+          - IndexName: job-id-index
+            KeySchema: 
+              - AttributeName: id
+                KeyType: HASH
+            Projection: 
+              ProjectionType: ALL
+        BillingMode: PAY_PER_REQUEST
+        
+
+    LambdaRole:
+      Type: AWS::IAM::Role        
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+              -   Effect: Allow
+                  Principal:
+                      Service:
+                      - lambda.amazonaws.com
+                  Action:
+                  - sts:AssumeRole
+        Path: "/"
+        RoleName: ${self:custom.PREFIX}-role
+        Policies:
+          - PolicyName: ${self:custom.PREFIX}-policy
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                -   Effect: Allow
+                    Action:
+                    - logs:CreateLogGroup
+                    - logs:CreateLogStream
+                    - logs:PutLogEvents
+                    Resource: '*'
+                -   Effect: Allow
+                    Action:
+                    - dynamodb:GetItem
+                    - dynamodb:Query
+                    - dynamodb:Scan
+                    - dynamodb:DeleteItem
+                    - dynamodb:UpdateItem
+                    - dynamodb:PutItem
+                    - dynamodb:BatchWriteItem
+                    Resource: 
+                    - !GetAtt JobApplicationsTable.Arn
+                    - !Sub "${JobApplicationsTable.Arn}/*"

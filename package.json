@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "@serverless/compose": "^1.3.0",
+    "serverless-deployment-bucket": "^1.6.0",
+    "serverless-latest-layer-version": "^2.1.2",
+    "serverless-ssm-fetch": "^2.0.0"
+  }
+}

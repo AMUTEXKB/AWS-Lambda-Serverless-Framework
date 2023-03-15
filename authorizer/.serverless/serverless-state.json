@@ -1,0 +1,401 @@
+{
+  "service": {
+    "service": "pioneers-authorizer",
+    "serviceObject": {
+      "name": "pioneers-authorizer"
+    },
+    "provider": {
+      "name": "aws",
+      "stage": "dev",
+      "region": "us-east-1",
+      "deploymentBucket": "pioneers-serverless-deployment-bucket-dev-kb",
+      "runtime": "python3.9",
+      "environment": {
+        "USER_TABLE_NAME": "users"
+      },
+      "versionFunctions": true,
+      "deploymentBucketObject": {
+        "name": "pioneers-serverless-deployment-bucket-dev-kb",
+        "serverSideEncryption": "AES256"
+      },
+      "compiledCloudFormationTemplate": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "The AWS CloudFormation template for this Serverless application",
+        "Resources": {
+          "AuthorizerLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/pioneers-authorizer-dev-authorizer"
+            }
+          },
+          "IamRoleLambdaExecution": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+              "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Principal": {
+                      "Service": [
+                        "lambda.amazonaws.com"
+                      ]
+                    },
+                    "Action": [
+                      "sts:AssumeRole"
+                    ]
+                  }
+                ]
+              },
+              "Policies": [
+                {
+                  "PolicyName": {
+                    "Fn::Join": [
+                      "-",
+                      [
+                        "pioneers-authorizer",
+                        "dev",
+                        "lambda"
+                      ]
+                    ]
+                  },
+                  "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:CreateLogStream",
+                          "logs:CreateLogGroup"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/pioneers-authorizer-dev*:*"
+                          }
+                        ]
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:PutLogEvents"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/pioneers-authorizer-dev*:*:*"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ],
+              "Path": "/",
+              "RoleName": {
+                "Fn::Join": [
+                  "-",
+                  [
+                    "pioneers-authorizer",
+                    "dev",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    "lambdaRole"
+                  ]
+                ]
+              }
+            }
+          },
+          "AuthorizerLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "pioneers-serverless-deployment-bucket-dev-kb",
+                "S3Key": "serverless/pioneers-authorizer/dev/1678855011672-2023-03-15T04:36:51.672Z/authorizer.zip"
+              },
+              "Handler": "authorizer.lambda_handler",
+              "Runtime": "python3.9",
+              "FunctionName": "pioneers-authorizer-dev-authorizer",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "Environment": {
+                "Variables": {
+                  "USER_TABLE_NAME": "users",
+                  "AUTH0_DOMAIN": "example-domain.auth0.com",
+                  "AUTH0_CLIENT_ID": "example-client-id",
+                  "AUTH0_MANAGEMENT_API_CLIENT_ID": "example-management-api-client-id",
+                  "AUTH0_MANAGEMENT_API_SECRET": "example-management-api-secret"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              },
+              "Layers": [
+                "arn:aws:lambda:us-east-1:109661032234:layer:pioneers-layers-dev-authorizer:2"
+              ]
+            },
+            "DependsOn": [
+              "AuthorizerLogGroup"
+            ]
+          },
+          "AuthorizerLambdaVersionQHfY9oFoFw9vCNz1UCTocqo3bB5t8EZw2XyhD3g": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "AuthorizerLambdaFunction"
+              },
+              "CodeSha256": "EBsM1YIBArpSEPRtVONw9MWC1ocsGRVObQRLIgWiEsk="
+            }
+          },
+          "LambdaRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+              "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Principal": {
+                      "Service": [
+                        "lambda.amazonaws.com"
+                      ]
+                    },
+                    "Action": [
+                      "sts:AssumeRole"
+                    ]
+                  }
+                ]
+              },
+              "Path": "/",
+              "RoleName": "pioneers-authorizer-dev-role",
+              "Policies": [
+                {
+                  "PolicyName": "pioneers-authorizer-dev-policy",
+                  "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:CreateLogGroup",
+                          "logs:CreateLogStream",
+                          "logs:PutLogEvents"
+                        ],
+                        "Resource": "*"
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "dynamodb:GetItem",
+                          "dynamodb:Query",
+                          "dynamodb:Scan",
+                          "dynamodb:UpdateItem",
+                          "dynamodb:PutItem"
+                        ],
+                        "Resource": [
+                          "arn:aws:dynamodb:us-east-1:*:table/users",
+                          "arn:aws:dynamodb:us-east-1:*:table/users/*"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "Outputs": {
+          "ServerlessDeploymentBucketName": {
+            "Value": "pioneers-serverless-deployment-bucket-dev-kb",
+            "Export": {
+              "Name": "sls-pioneers-authorizer-dev-ServerlessDeploymentBucketName"
+            }
+          },
+          "AuthorizerLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "AuthorizerLambdaVersionQHfY9oFoFw9vCNz1UCTocqo3bB5t8EZw2XyhD3g"
+            },
+            "Export": {
+              "Name": "sls-pioneers-authorizer-dev-AuthorizerLambdaFunctionQualifiedArn"
+            }
+          },
+          "authARN": {
+            "Value": {
+              "Fn::GetAtt": [
+                "AuthorizerLambdaFunction",
+                "Arn"
+              ]
+            }
+          }
+        }
+      },
+      "vpc": {}
+    },
+    "custom": {
+      "STAGE": "dev",
+      "REGION": "us-east-1",
+      "DEPLOYMENT_BUCKET": "pioneers-serverless-deployment-bucket-dev-kb",
+      "ACCOUNT_ID": "${AWS::AccountId}",
+      "PREFIX": "pioneers-authorizer-dev",
+      "LAYER_PREFIX": "pioneers-layers-dev",
+      "serverlessSsmFetch": {
+        "AUTH0_DOMAIN": "/pioneer-community/dev/auth0_domain~true",
+        "AUTH0_CLIENT_ID": "/pioneer-community/dev/auth0_client_id~true",
+        "AUTH0_MANAGEMENT_API_CLIENT_ID": "/pioneer-community/dev/auth0_management_api_client_id~true",
+        "AUTH0_MANAGEMENT_API_SECRET": "/pioneer-community/dev/auth0_management_api_secret~true"
+      }
+    },
+    "plugins": [
+      "serverless-deployment-bucket",
+      "serverless-ssm-fetch",
+      "serverless-latest-layer-version"
+    ],
+    "pluginsData": {},
+    "functions": {
+      "authorizer": {
+        "handler": "authorizer.lambda_handler",
+        "package": {
+          "exclude": [
+            "./**"
+          ],
+          "include": [
+            "authorizer.py",
+            "auth_gateway_response_helper.py"
+          ],
+          "artifact": "C:\\Users\\DELL\\Downloads\\aws_lambdas\\authorizer\\.serverless\\authorizer.zip"
+        },
+        "ssmToEnvironment": [
+          "AUTH0_DOMAIN",
+          "AUTH0_CLIENT_ID",
+          "AUTH0_MANAGEMENT_API_CLIENT_ID",
+          "AUTH0_MANAGEMENT_API_SECRET"
+        ],
+        "layers": {
+          "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"AuthorizerLambdaFunction\"][\"Properties\"][\"Layers\"]"
+        },
+        "events": [],
+        "name": "pioneers-authorizer-dev-authorizer",
+        "environment": {
+          "AUTH0_DOMAIN": "example-domain.auth0.com",
+          "AUTH0_CLIENT_ID": "example-client-id",
+          "AUTH0_MANAGEMENT_API_CLIENT_ID": "example-management-api-client-id",
+          "AUTH0_MANAGEMENT_API_SECRET": "example-management-api-secret"
+        },
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "python3.9",
+        "vpc": {},
+        "versionLogicalId": "AuthorizerLambdaVersionQHfY9oFoFw9vCNz1UCTocqo3bB5t8EZw2XyhD3g"
+      }
+    },
+    "resources": {
+      "Resources": {
+        "LambdaRole": {
+          "Type": "AWS::IAM::Role",
+          "Properties": {
+            "AssumeRolePolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Principal": {
+                    "Service": [
+                      "lambda.amazonaws.com"
+                    ]
+                  },
+                  "Action": [
+                    "sts:AssumeRole"
+                  ]
+                }
+              ]
+            },
+            "Path": "/",
+            "RoleName": "pioneers-authorizer-dev-role",
+            "Policies": [
+              {
+                "PolicyName": "pioneers-authorizer-dev-policy",
+                "PolicyDocument": {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                        "logs:CreateLogGroup",
+                        "logs:CreateLogStream",
+                        "logs:PutLogEvents"
+                      ],
+                      "Resource": "*"
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                        "dynamodb:GetItem",
+                        "dynamodb:Query",
+                        "dynamodb:Scan",
+                        "dynamodb:UpdateItem",
+                        "dynamodb:PutItem"
+                      ],
+                      "Resource": [
+                        "arn:aws:dynamodb:us-east-1:*:table/users",
+                        "arn:aws:dynamodb:us-east-1:*:table/users/*"
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      },
+      "Outputs": {
+        "authARN": {
+          "Value": {
+            "Fn::GetAtt": [
+              "AuthorizerLambdaFunction",
+              "Arn"
+            ]
+          }
+        }
+      }
+    },
+    "configValidationMode": "warn",
+    "serviceFilename": "serverless.yml",
+    "initialServerlessConfig": {
+      "service": "pioneers-authorizer",
+      "frameworkVersion": "3",
+      "useDotenv": true,
+      "package": {
+        "individually": true,
+        "artifactsS3KeyDirname": "serverless/pioneers-authorizer/dev/code-artifacts",
+        "deploymentBucket": "pioneers-serverless-deployment-bucket-dev-kb",
+        "artifactDirectoryName": "serverless/pioneers-authorizer/dev/1678855011672-2023-03-15T04:36:51.672Z"
+      },
+      "custom": {
+        "$ref": "$[\"service\"][\"custom\"]"
+      },
+      "plugins": {
+        "$ref": "$[\"service\"][\"plugins\"]"
+      },
+      "provider": {
+        "$ref": "$[\"service\"][\"provider\"]"
+      },
+      "functions": {
+        "$ref": "$[\"service\"][\"functions\"]"
+      },
+      "resources": {
+        "$ref": "$[\"service\"][\"resources\"]"
+      }
+    },
+    "layers": {},
+    "isDashboardMonitoringPreconfigured": false
+  },
+  "package": {
+    "individually": true,
+    "artifactDirectoryName": "serverless/pioneers-authorizer/dev/1678855011672-2023-03-15T04:36:51.672Z",
+    "artifact": ""
+  }
+}

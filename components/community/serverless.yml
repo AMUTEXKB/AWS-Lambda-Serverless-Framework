@@ -1,0 +1,431 @@
+service: pioneers-community
+frameworkVersion: '3'
+useDotenv: true
+
+package:
+  individually: True
+
+custom:
+  STAGE: dev
+  REGION: ${env:REGION}
+  DEPLOYMENT_BUCKET: ${env:DEPLOYMENT_BUCKET}
+  ACCOUNT_ID: ${AWS::AccountId}
+  PREFIX: ${self:service}-${self:custom.STAGE}
+  LAYER_PREFIX: pioneers-layers-dev   # ${param:LAYER_PREFIX}
+  AUTHORIZER_ARN: ${param:AUTHORIZER_ARN}
+  serverlessSsmFetch:
+    AUTH0_DOMAIN: /pioneers-community/${self:custom.STAGE}/auth0_domain~true
+    AUTH0_CLIENT_ID: /pioneers-community/${self:custom.STAGE}/auth0_client_id~true
+    AUTH0_MANAGEMENT_API_CLIENT_ID: /pioneers-community/${self:custom.STAGE}/auth0_management_api_client_id~true
+    AUTH0_MANAGEMENT_API_SECRET: /pioneers-community/${self:custom.STAGE}/auth0_management_api_secret~true
+
+plugins:
+  - serverless-deployment-bucket
+  - serverless-ssm-fetch
+  - serverless-latest-layer-version
+
+provider:
+  name: aws
+  stage: ${self:custom.STAGE}
+  region: ${self:custom.REGION}
+  deploymentBucket:
+    name: ${self:custom.DEPLOYMENT_BUCKET}
+    serverSideEncryption: AES256
+  runtime: python3.9
+  environment:
+    POST_TABLE_NAME: !Ref PostTable
+    COMMENT_TABLE_NAME: !Ref CommentTable
+    USER_TABLE_NAME: users
+
+# todo rename api urls
+functions:
+
+  create-post:
+    handler: handlers/post/create_post.lambda_handler
+    layers:
+      - arn:aws:lambda:${self:custom.REGION}:#{AWS::AccountId}:layer:${self:custom.LAYER_PREFIX}-common:latest
+    package:
+      # exclude:
+      # - "./**"
+      include:
+      - "handlers/post/create_post.py"
+    timeout: 30
+    role: !GetAtt LambdaRole.Arn
+    events:
+      - http:
+          path: community/{community_id}/question
+          method: POST
+          authorizer:
+            name: authorizer
+            arn: ${self:custom.AUTHORIZER_ARN}
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Authorization
+            type: token
+          cors:
+            origin: "*"
+            headers: "*"
+            allowCredentials: true
+
+  edit-post:
+    handler: handlers/post/edit_post.lambda_handler
+    layers:
+      - arn:aws:lambda:${self:custom.REGION}:#{AWS::AccountId}:layer:${self:custom.LAYER_PREFIX}-common:latest
+    package:
+      # exclude:
+      # - "./**"
+      include:
+      - "handlers/post/edit_post.py"
+    timeout: 30
+    role: !GetAtt LambdaRole.Arn
+    events:
+      - http:
+          path: community/{community_id}/question/{question_id}
+          method: PUT
+          authorizer:
+            name: authorizer
+            arn: ${self:custom.AUTHORIZER_ARN}
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Authorization
+            type: token
+          cors:
+            origin: "*"
+            headers: "*"
+            allowCredentials: true
+
+  delete-post:
+    handler: handlers/post/delete_post.lambda_handler
+    layers:
+      - arn:aws:lambda:${self:custom.REGION}:#{AWS::AccountId}:layer:${self:custom.LAYER_PREFIX}-common:latest
+    package:
+      # exclude:
+      # - "./**"
+      include:
+      - "handlers/post/delete_post.py"
+    timeout: 30
+    role: !GetAtt LambdaRole.Arn
+    events:
+      - http:
+          path: community/{community_id}/question/{question_id}
+          method: DELETE
+          authorizer:
+            name: authorizer
+            arn: ${self:custom.AUTHORIZER_ARN}
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Authorization
+            type: token
+          cors:
+            origin: "*"
+            headers: "*"
+            allowCredentials: true
+
+  get-post:
+    handler: handlers/post/get_post.lambda_handler
+    layers:
+      - arn:aws:lambda:${self:custom.REGION}:#{AWS::AccountId}:layer:${self:custom.LAYER_PREFIX}-common:latest
+    package:
+      # exclude:
+      # - "./**"
+      include:
+      - "handlers/post/get_post.py"
+    timeout: 30
+    role: !GetAtt LambdaRole.Arn
+    events:
+      - http:
+          path: community/{community_id}/question/{question_id}
+          method: GET
+          authorizer:
+            name: authorizer
+            arn: ${self:custom.AUTHORIZER_ARN}
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Authorization
+            type: token
+          cors:
+            origin: "*"
+            headers: "*"
+            allowCredentials: true
+
+  list-post:
+    handler: handlers/post/list_post.lambda_handler
+    layers:
+      - arn:aws:lambda:${self:custom.REGION}:#{AWS::AccountId}:layer:${self:custom.LAYER_PREFIX}-common:latest
+    package:
+      # exclude:
+      # - "./**"
+      include:
+      - "handlers/post/list_post.py"
+    timeout: 30
+    role: !GetAtt LambdaRole.Arn
+    events:
+      - http:
+          path: community/{community_id}/question
+          method: GET
+#          authorizer:
+#            name: authorizer
+#            resultTtlInSeconds: 0
+#            identitySource: method.request.header.Authorization
+#            type: token
+          cors:
+            origin: "*"
+            headers: "*"
+            allowCredentials: true
+
+  vote-post:
+    handler: handlers/post/vote_post.lambda_handler
+    layers:
+      - arn:aws:lambda:${self:custom.REGION}:#{AWS::AccountId}:layer:${self:custom.LAYER_PREFIX}-common:latest
+    package:
+      # exclude:
+      #   - "./**"
+      include:
+        - "handlers/post/vote_post.py"
+    timeout: 30
+    role: !GetAtt LambdaRole.Arn
+    events:
+      - http:
+          path: community/{community_id}/question/{question_id}/vote
+          method: PUT
+          authorizer:
+            name: authorizer
+            arn: ${self:custom.AUTHORIZER_ARN}
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Authorization
+            type: token
+          cors:
+            origin: "*"
+            headers: "*"
+            allowCredentials: true
+
+
+  add-comment:
+    handler: handlers/comment/add_comment.lambda_handler
+    layers:
+      - arn:aws:lambda:${self:custom.REGION}:#{AWS::AccountId}:layer:${self:custom.LAYER_PREFIX}-common:latest
+    package:
+      # exclude:
+      # - "./**"
+      include:
+      - "handlers/comment/add_comment.py"
+    timeout: 30
+    role: !GetAtt LambdaRole.Arn
+    events:
+      - http:
+          path: community/{community_id}/question/{question_id}/answer
+          method: POST
+          authorizer:
+            name: authorizer
+            arn: ${self:custom.AUTHORIZER_ARN}
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Authorization
+            type: token
+          cors:
+            origin: "*"
+            headers: "*"
+            allowCredentials: true
+
+  edit-comment:
+    handler: handlers/comment/edit_comment.lambda_handler
+    layers:
+      - arn:aws:lambda:${self:custom.REGION}:#{AWS::AccountId}:layer:${self:custom.LAYER_PREFIX}-common:latest
+    package:
+      # exclude:
+      # - "./**"
+      include:
+      - "handlers/comment/edit_comment.py"
+    timeout: 30
+    role: !GetAtt LambdaRole.Arn
+    events:
+      - http:
+          path: /question/{question_id}/answer/{answer_id}
+          method: PUT
+          authorizer:
+            name: authorizer
+            arn: ${self:custom.AUTHORIZER_ARN}
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Authorization
+            type: token
+          cors:
+            origin: "*"
+            headers: "*"
+            allowCredentials: true
+
+  delete-comment:
+    handler: handlers/comment/delete_comment.lambda_handler
+    layers:
+      - arn:aws:lambda:${self:custom.REGION}:#{AWS::AccountId}:layer:${self:custom.LAYER_PREFIX}-common:latest
+    package:
+      # exclude:
+      # - "./**"
+      include:
+      - "handlers/comment/delete_comment.py"
+    timeout: 30
+    role: !GetAtt LambdaRole.Arn
+    events:
+      - http:
+          path: community/{community_id}/question/{question_id}/answer/{answer_id}
+          method: DELETE
+          authorizer:
+            name: authorizer
+            arn: ${self:custom.AUTHORIZER_ARN}
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Authorization
+            type: token
+          cors:
+            origin: "*"
+            headers: "*"
+            allowCredentials: true
+
+  get-comment:
+    handler: handlers/comment/get_comment.lambda_handler
+    layers:
+      - arn:aws:lambda:${self:custom.REGION}:#{AWS::AccountId}:layer:${self:custom.LAYER_PREFIX}-common:latest
+    package:
+      # exclude:
+      # - "./**"
+      include:
+      - "handlers/comment/get_comment.py"
+    timeout: 30
+    role: !GetAtt LambdaRole.Arn
+    events:
+      - http:
+          path: /question/{question_id}/answer/{answer_id}
+          method: GET
+#          authorizer:
+#            name: authorizer
+#            resultTtlInSeconds: 0
+#            identitySource: method.request.header.Authorization
+#            type: token
+          cors:
+            origin: "*"
+            headers: "*"
+            allowCredentials: true
+
+  list-comment:
+    handler: handlers/comment/list_comment.lambda_handler
+    layers:
+      - arn:aws:lambda:${self:custom.REGION}:#{AWS::AccountId}:layer:${self:custom.LAYER_PREFIX}-common:latest
+    package:
+      # exclude:
+      # - "./**"
+      include:
+      - "handlers/comment/list_comment.py"
+    timeout: 30
+    role: !GetAtt LambdaRole.Arn
+    events:
+      - http:
+          path: /question/{question_id}/answer
+          method: GET
+#          authorizer:
+#            name: authorizer
+#            resultTtlInSeconds: 0
+#            identitySource: method.request.header.Authorization
+#            type: token
+          cors:
+            origin: "*"
+            headers: "*"
+            allowCredentials: true
+
+resources:
+  Resources:
+    PostTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: community_posts
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: community_id
+            AttributeType: S
+          - AttributeName: created_time_epoch
+            AttributeType: N
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+          - AttributeName: community_id
+            KeyType: RANGE
+        GlobalSecondaryIndexes:
+          - IndexName: community_id_created_time_epoch_index
+            KeySchema:
+              - AttributeName: community_id
+                KeyType: HASH
+              - AttributeName: created_time_epoch
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+        BillingMode: PAY_PER_REQUEST
+
+    CommentTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: community_comments
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: post_id
+            AttributeType: S
+          - AttributeName: created_time_epoch
+            AttributeType: N
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+          - AttributeName: post_id
+            KeyType: RANGE
+        GlobalSecondaryIndexes:
+          - IndexName: post_id_created_time_epoch_index
+            KeySchema:
+              - AttributeName: post_id
+                KeyType: HASH
+              - AttributeName: created_time_epoch
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+        BillingMode: PAY_PER_REQUEST
+
+    LambdaRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+              -   Effect: Allow
+                  Principal:
+                      Service:
+                      - lambda.amazonaws.com
+                  Action:
+                  - sts:AssumeRole
+        Path: "/"
+        RoleName: ${self:custom.PREFIX}-role
+        Policies:
+          - PolicyName: ${self:custom.PREFIX}-policy
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                -   Effect: Allow
+                    Action:
+                    - logs:CreateLogGroup
+                    - logs:CreateLogStream
+                    - logs:PutLogEvents
+                    Resource: '*'
+                -   Effect: Allow
+                    Action:
+                    - dynamodb:GetItem
+                    - dynamodb:Query
+                    - dynamodb:Scan
+                    - dynamodb:DeleteItem
+                    - dynamodb:UpdateItem
+                    - dynamodb:PutItem
+                    - dynamodb:BatchWriteItem
+                    Resource:
+                    - !GetAtt PostTable.Arn
+                    - !Sub "${PostTable.Arn}/*"
+                    - !GetAtt CommentTable.Arn
+                    - !Sub "${CommentTable.Arn}/*"
+                -   Effect: Allow
+                    Action:
+                      - dynamodb:GetItem
+                      - dynamodb:Query
+                      - dynamodb:Scan
+                      - dynamodb:UpdateItem
+                      - dynamodb:PutItem
+                    Resource:
+                    - arn:aws:dynamodb:${self:custom.REGION}:*:table/users
+                    - arn:aws:dynamodb:${self:custom.REGION}:*:table/users/*

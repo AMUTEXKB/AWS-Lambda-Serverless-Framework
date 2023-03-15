@@ -1,0 +1,1455 @@
+{
+  "service": {
+    "service": "pioneers-application-tracker",
+    "serviceObject": {
+      "name": "pioneers-application-tracker"
+    },
+    "provider": {
+      "name": "aws",
+      "stage": "dev",
+      "region": "us-east-1",
+      "deploymentBucket": "pioneers-serverless-deployment-bucket-dev-kb",
+      "runtime": "python3.9",
+      "environment": {
+        "APPLICATION_TRACKER_TABLE_NAME": {
+          "Ref": "ApplicationTrackerTable"
+        }
+      },
+      "versionFunctions": true,
+      "deploymentBucketObject": {
+        "name": "pioneers-serverless-deployment-bucket-dev-kb",
+        "serverSideEncryption": "AES256"
+      },
+      "compiledCloudFormationTemplate": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "The AWS CloudFormation template for this Serverless application",
+        "Resources": {
+          "CreateDashcardLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/pioneers-application-tracker-dev-create-card"
+            }
+          },
+          "EditDashcardLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/pioneers-application-tracker-dev-edit-card"
+            }
+          },
+          "DeleteDashcardLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/pioneers-application-tracker-dev-delete-card"
+            }
+          },
+          "GetDashcardLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/pioneers-application-tracker-dev-get-card"
+            }
+          },
+          "ListDashcardLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/pioneers-application-tracker-dev-list-card"
+            }
+          },
+          "CreateDashcardLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "pioneers-serverless-deployment-bucket-dev-kb",
+                "S3Key": "serverless/pioneers-application-tracker/dev/1678855049788-2023-03-15T04:37:29.788Z/create-card.zip"
+              },
+              "Handler": "handlers/application_card/create_card.lambda_handler",
+              "Runtime": "python3.9",
+              "FunctionName": "pioneers-application-tracker-dev-create-card",
+              "MemorySize": 1024,
+              "Timeout": 30,
+              "Environment": {
+                "Variables": {
+                  "APPLICATION_TRACKER_TABLE_NAME": {
+                    "$ref": "$[\"service\"][\"provider\"][\"environment\"][\"APPLICATION_TRACKER_TABLE_NAME\"]"
+                  }
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "LambdaRole",
+                  "Arn"
+                ]
+              },
+              "Layers": [
+                "arn:aws:lambda:us-east-1:109661032234:layer:pioneers-layers-dev-common:16"
+              ]
+            },
+            "DependsOn": [
+              "CreateDashcardLogGroup",
+              "LambdaRole"
+            ]
+          },
+          "EditDashcardLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "pioneers-serverless-deployment-bucket-dev-kb",
+                "S3Key": "serverless/pioneers-application-tracker/dev/1678855049788-2023-03-15T04:37:29.788Z/edit-card.zip"
+              },
+              "Handler": "handlers/application_card/edit_card.lambda_handler",
+              "Runtime": "python3.9",
+              "FunctionName": "pioneers-application-tracker-dev-edit-card",
+              "MemorySize": 1024,
+              "Timeout": 30,
+              "Environment": {
+                "Variables": {
+                  "APPLICATION_TRACKER_TABLE_NAME": {
+                    "$ref": "$[\"service\"][\"provider\"][\"environment\"][\"APPLICATION_TRACKER_TABLE_NAME\"]"
+                  }
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "LambdaRole",
+                  "Arn"
+                ]
+              },
+              "Layers": [
+                "arn:aws:lambda:us-east-1:109661032234:layer:pioneers-layers-dev-common:16"
+              ]
+            },
+            "DependsOn": [
+              "EditDashcardLogGroup",
+              "LambdaRole"
+            ]
+          },
+          "DeleteDashcardLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "pioneers-serverless-deployment-bucket-dev-kb",
+                "S3Key": "serverless/pioneers-application-tracker/dev/1678855049788-2023-03-15T04:37:29.788Z/delete-card.zip"
+              },
+              "Handler": "handlers/application_card/delete_card.lambda_handler",
+              "Runtime": "python3.9",
+              "FunctionName": "pioneers-application-tracker-dev-delete-card",
+              "MemorySize": 1024,
+              "Timeout": 30,
+              "Environment": {
+                "Variables": {
+                  "APPLICATION_TRACKER_TABLE_NAME": {
+                    "$ref": "$[\"service\"][\"provider\"][\"environment\"][\"APPLICATION_TRACKER_TABLE_NAME\"]"
+                  }
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "LambdaRole",
+                  "Arn"
+                ]
+              },
+              "Layers": [
+                "arn:aws:lambda:us-east-1:109661032234:layer:pioneers-layers-dev-common:16"
+              ]
+            },
+            "DependsOn": [
+              "DeleteDashcardLogGroup",
+              "LambdaRole"
+            ]
+          },
+          "GetDashcardLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "pioneers-serverless-deployment-bucket-dev-kb",
+                "S3Key": "serverless/pioneers-application-tracker/dev/1678855049788-2023-03-15T04:37:29.788Z/get-card.zip"
+              },
+              "Handler": "handlers/application_card/get_card.lambda_handler",
+              "Runtime": "python3.9",
+              "FunctionName": "pioneers-application-tracker-dev-get-card",
+              "MemorySize": 1024,
+              "Timeout": 30,
+              "Environment": {
+                "Variables": {
+                  "APPLICATION_TRACKER_TABLE_NAME": {
+                    "$ref": "$[\"service\"][\"provider\"][\"environment\"][\"APPLICATION_TRACKER_TABLE_NAME\"]"
+                  }
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "LambdaRole",
+                  "Arn"
+                ]
+              },
+              "Layers": [
+                "arn:aws:lambda:us-east-1:109661032234:layer:pioneers-layers-dev-common:16"
+              ]
+            },
+            "DependsOn": [
+              "GetDashcardLogGroup",
+              "LambdaRole"
+            ]
+          },
+          "ListDashcardLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "pioneers-serverless-deployment-bucket-dev-kb",
+                "S3Key": "serverless/pioneers-application-tracker/dev/1678855049788-2023-03-15T04:37:29.788Z/list-card.zip"
+              },
+              "Handler": "handlers/application_card/list_card.lambda_handler",
+              "Runtime": "python3.9",
+              "FunctionName": "pioneers-application-tracker-dev-list-card",
+              "MemorySize": 1024,
+              "Timeout": 30,
+              "Environment": {
+                "Variables": {
+                  "APPLICATION_TRACKER_TABLE_NAME": {
+                    "$ref": "$[\"service\"][\"provider\"][\"environment\"][\"APPLICATION_TRACKER_TABLE_NAME\"]"
+                  }
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "LambdaRole",
+                  "Arn"
+                ]
+              },
+              "Layers": [
+                "arn:aws:lambda:us-east-1:109661032234:layer:pioneers-layers-dev-common:16"
+              ]
+            },
+            "DependsOn": [
+              "ListDashcardLogGroup",
+              "LambdaRole"
+            ]
+          },
+          "CreateDashcardLambdaVersiontMiHDfXBmizHThT0jGJERoouVfyUG2ngJWtrZRmiag": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "CreateDashcardLambdaFunction"
+              },
+              "CodeSha256": "ZKHZNisFQOo6EAtKobI47xen6KB6/7/jlvFeNi+C6nM="
+            }
+          },
+          "EditDashcardLambdaVersionRzSC5lRrCShHZzKWmmrmwuhpACqwgAxP3DfpG2B0QQ": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "EditDashcardLambdaFunction"
+              },
+              "CodeSha256": "VHvCMx0V88LYTSgNBRQb4vRUqw+lpPZ4eUVsFQQobaA="
+            }
+          },
+          "DeleteDashcardLambdaVersionvT87Xdxr1FOHw1Qx596b6ddduV6FIkIBc5U1tCQq2Ao": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "DeleteDashcardLambdaFunction"
+              },
+              "CodeSha256": "+D8naetUxkaaKeZOy6cEofl9312RC1n7g+Khb3A0HMs="
+            }
+          },
+          "GetDashcardLambdaVersionLC1WacPrndFbIaSNJcWE4G0shj814eX5lc1FOYqGGpc": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "GetDashcardLambdaFunction"
+              },
+              "CodeSha256": "7OKXcoUo5q3wn9YMvASbyGUQOWwIQ1L6umLTr2pRuvA="
+            }
+          },
+          "ListDashcardLambdaVersionCNcXjcwUBHPpyXEct6B9DdufyvPl7FE9PMrP7beaKI": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "ListDashcardLambdaFunction"
+              },
+              "CodeSha256": "LfTDuTRxCBQCBesn2qfGq+yOAeH8rizrhfWZtR4J6rc="
+            }
+          },
+          "ApiGatewayRestApi": {
+            "Type": "AWS::ApiGateway::RestApi",
+            "Properties": {
+              "Name": "dev-pioneers-application-tracker",
+              "EndpointConfiguration": {
+                "Types": [
+                  "EDGE"
+                ]
+              },
+              "Policy": ""
+            }
+          },
+          "ApiGatewayResourceUser": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Fn::GetAtt": [
+                  "ApiGatewayRestApi",
+                  "RootResourceId"
+                ]
+              },
+              "PathPart": "user",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceUserUseridVar": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceUser"
+              },
+              "PathPart": "{user_id}",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceUserUseridVarJob": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceUserUseridVar"
+              },
+              "PathPart": "job",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceUserUseridVarJobJobidVar": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceUserUseridVarJob"
+              },
+              "PathPart": "{job_id}",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodUserUseridVarJobOptions": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "AuthorizationType": "NONE",
+              "HttpMethod": "OPTIONS",
+              "MethodResponses": [
+                {
+                  "StatusCode": "200",
+                  "ResponseParameters": {
+                    "method.response.header.Access-Control-Allow-Origin": true,
+                    "method.response.header.Access-Control-Allow-Headers": true,
+                    "method.response.header.Access-Control-Allow-Methods": true,
+                    "method.response.header.Access-Control-Allow-Credentials": true
+                  },
+                  "ResponseModels": {}
+                }
+              ],
+              "RequestParameters": {},
+              "Integration": {
+                "Type": "MOCK",
+                "RequestTemplates": {
+                  "application/json": "{statusCode:200}"
+                },
+                "ContentHandling": "CONVERT_TO_TEXT",
+                "IntegrationResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": "'*'",
+                      "method.response.header.Access-Control-Allow-Headers": "'*'",
+                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,POST'",
+                      "method.response.header.Access-Control-Allow-Credentials": "'true'"
+                    },
+                    "ResponseTemplates": {
+                      "application/json": ""
+                    }
+                  }
+                ]
+              },
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceUserUseridVarJob"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodUserUseridVarJobJobidVarOptions": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "AuthorizationType": "NONE",
+              "HttpMethod": "OPTIONS",
+              "MethodResponses": [
+                {
+                  "StatusCode": "200",
+                  "ResponseParameters": {
+                    "method.response.header.Access-Control-Allow-Origin": true,
+                    "method.response.header.Access-Control-Allow-Headers": true,
+                    "method.response.header.Access-Control-Allow-Methods": true,
+                    "method.response.header.Access-Control-Allow-Credentials": true
+                  },
+                  "ResponseModels": {}
+                }
+              ],
+              "RequestParameters": {},
+              "Integration": {
+                "Type": "MOCK",
+                "RequestTemplates": {
+                  "application/json": "{statusCode:200}"
+                },
+                "ContentHandling": "CONVERT_TO_TEXT",
+                "IntegrationResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": "'*'",
+                      "method.response.header.Access-Control-Allow-Headers": "'*'",
+                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,DELETE,PUT'",
+                      "method.response.header.Access-Control-Allow-Credentials": "'true'"
+                    },
+                    "ResponseTemplates": {
+                      "application/json": ""
+                    }
+                  }
+                ]
+              },
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceUserUseridVarJobJobidVar"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodUserUseridVarJobPost": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "POST",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceUserUseridVarJob"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "CreateDashcardLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "CreateDashcardLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayMethodUserUseridVarJobJobidVarPut": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "PUT",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceUserUseridVarJobJobidVar"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "EditDashcardLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "EditDashcardLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayMethodUserUseridVarJobJobidVarDelete": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "DELETE",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceUserUseridVarJobJobidVar"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "DeleteDashcardLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "DeleteDashcardLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayMethodUserUseridVarJobJobidVarGet": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "GET",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceUserUseridVarJobJobidVar"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "GetDashcardLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "GetDashcardLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayMethodUserUseridVarJobGet": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "GET",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceUserUseridVarJob"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "ListDashcardLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "ListDashcardLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayDeployment1678855039022": {
+            "Type": "AWS::ApiGateway::Deployment",
+            "Properties": {
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "StageName": "dev"
+            },
+            "DependsOn": [
+              "ApiGatewayMethodUserUseridVarJobOptions",
+              "ApiGatewayMethodUserUseridVarJobJobidVarOptions",
+              "ApiGatewayMethodUserUseridVarJobPost",
+              "ApiGatewayMethodUserUseridVarJobJobidVarPut",
+              "ApiGatewayMethodUserUseridVarJobJobidVarDelete",
+              "ApiGatewayMethodUserUseridVarJobJobidVarGet",
+              "ApiGatewayMethodUserUseridVarJobGet"
+            ]
+          },
+          "CreateDashcardLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "CreateDashcardLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "EditDashcardLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "EditDashcardLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "DeleteDashcardLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "DeleteDashcardLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "GetDashcardLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "GetDashcardLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "ListDashcardLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "ListDashcardLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "ApplicationTrackerTable": {
+            "Type": "AWS::DynamoDB::Table",
+            "Properties": {
+              "TableName": "application_tracker_cards",
+              "AttributeDefinitions": [
+                {
+                  "AttributeName": "id",
+                  "AttributeType": "S"
+                },
+                {
+                  "AttributeName": "user_id",
+                  "AttributeType": "S"
+                },
+                {
+                  "AttributeName": "created_time_epoch",
+                  "AttributeType": "N"
+                }
+              ],
+              "KeySchema": [
+                {
+                  "AttributeName": "id",
+                  "KeyType": "HASH"
+                },
+                {
+                  "AttributeName": "user_id",
+                  "KeyType": "RANGE"
+                }
+              ],
+              "GlobalSecondaryIndexes": [
+                {
+                  "IndexName": "user_id_created_time_epoch_index",
+                  "KeySchema": [
+                    {
+                      "AttributeName": "user_id",
+                      "KeyType": "HASH"
+                    },
+                    {
+                      "AttributeName": "created_time_epoch",
+                      "KeyType": "RANGE"
+                    }
+                  ],
+                  "Projection": {
+                    "ProjectionType": "ALL"
+                  }
+                }
+              ],
+              "BillingMode": "PAY_PER_REQUEST"
+            }
+          },
+          "LambdaRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+              "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Principal": {
+                      "Service": [
+                        "lambda.amazonaws.com"
+                      ]
+                    },
+                    "Action": [
+                      "sts:AssumeRole"
+                    ]
+                  }
+                ]
+              },
+              "Path": "/",
+              "RoleName": "pioneers-application-tracker-dev-role",
+              "Policies": [
+                {
+                  "PolicyName": "pioneers-application-tracker-dev-policy",
+                  "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:CreateLogGroup",
+                          "logs:CreateLogStream",
+                          "logs:PutLogEvents"
+                        ],
+                        "Resource": "*"
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "dynamodb:GetItem",
+                          "dynamodb:Query",
+                          "dynamodb:Scan",
+                          "dynamodb:DeleteItem",
+                          "dynamodb:UpdateItem",
+                          "dynamodb:PutItem",
+                          "dynamodb:BatchWriteItem"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::GetAtt": [
+                              "ApplicationTrackerTable",
+                              "Arn"
+                            ]
+                          },
+                          {
+                            "Fn::Sub": "${ApplicationTrackerTable.Arn}/*"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "Outputs": {
+          "ServerlessDeploymentBucketName": {
+            "Value": "pioneers-serverless-deployment-bucket-dev-kb",
+            "Export": {
+              "Name": "sls-pioneers-application-tracker-dev-ServerlessDeploymentBucketName"
+            }
+          },
+          "CreateDashcardLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "CreateDashcardLambdaVersiontMiHDfXBmizHThT0jGJERoouVfyUG2ngJWtrZRmiag"
+            },
+            "Export": {
+              "Name": "sls-pioneers-application-tracker-dev-CreateDashcardLambdaFunctionQualifiedArn"
+            }
+          },
+          "EditDashcardLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "EditDashcardLambdaVersionRzSC5lRrCShHZzKWmmrmwuhpACqwgAxP3DfpG2B0QQ"
+            },
+            "Export": {
+              "Name": "sls-pioneers-application-tracker-dev-EditDashcardLambdaFunctionQualifiedArn"
+            }
+          },
+          "DeleteDashcardLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "DeleteDashcardLambdaVersionvT87Xdxr1FOHw1Qx596b6ddduV6FIkIBc5U1tCQq2Ao"
+            },
+            "Export": {
+              "Name": "sls-pioneers-application-tracker-dev-DeleteDashcardLambdaFunctionQualifiedArn"
+            }
+          },
+          "GetDashcardLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "GetDashcardLambdaVersionLC1WacPrndFbIaSNJcWE4G0shj814eX5lc1FOYqGGpc"
+            },
+            "Export": {
+              "Name": "sls-pioneers-application-tracker-dev-GetDashcardLambdaFunctionQualifiedArn"
+            }
+          },
+          "ListDashcardLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "ListDashcardLambdaVersionCNcXjcwUBHPpyXEct6B9DdufyvPl7FE9PMrP7beaKI"
+            },
+            "Export": {
+              "Name": "sls-pioneers-application-tracker-dev-ListDashcardLambdaFunctionQualifiedArn"
+            }
+          },
+          "ServiceEndpoint": {
+            "Description": "URL of the service endpoint",
+            "Value": {
+              "Fn::Join": [
+                "",
+                [
+                  "https://",
+                  {
+                    "Ref": "ApiGatewayRestApi"
+                  },
+                  ".execute-api.",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ".",
+                  {
+                    "Ref": "AWS::URLSuffix"
+                  },
+                  "/dev"
+                ]
+              ]
+            },
+            "Export": {
+              "Name": "sls-pioneers-application-tracker-dev-ServiceEndpoint"
+            }
+          }
+        }
+      },
+      "vpc": {}
+    },
+    "custom": {
+      "STAGE": "dev",
+      "REGION": "us-east-1",
+      "DEPLOYMENT_BUCKET": "pioneers-serverless-deployment-bucket-dev-kb",
+      "ACCOUNT_ID": "${AWS::AccountId}",
+      "PREFIX": "pioneers-application-tracker-dev",
+      "LAYER_PREFIX": "pioneers-layers-dev",
+      "AUTHORIZER_ARN": "arn:aws:lambda:us-east-1:109661032234:function:pioneers-authorizer-dev-authorizer"
+    },
+    "plugins": [
+      "serverless-deployment-bucket",
+      "serverless-latest-layer-version"
+    ],
+    "pluginsData": {},
+    "functions": {
+      "create-card": {
+        "handler": "handlers/application_card/create_card.lambda_handler",
+        "layers": {
+          "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"CreateDashcardLambdaFunction\"][\"Properties\"][\"Layers\"]"
+        },
+        "package": {
+          "exclude": [
+            "./**"
+          ],
+          "include": [
+            "handlers/application_card/create_card.py"
+          ],
+          "artifact": "C:\\Users\\DELL\\Downloads\\aws_lambdas\\components\\application_tracker\\.serverless\\create-card.zip"
+        },
+        "timeout": 30,
+        "role": {
+          "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"CreateDashcardLambdaFunction\"][\"Properties\"][\"Role\"]"
+        },
+        "events": [
+          {
+            "http": {
+              "path": "user/{user_id}/job",
+              "method": "post",
+              "cors": {
+                "origin": "*",
+                "methods": [
+                  "OPTIONS",
+                  "POST"
+                ],
+                "headers": [
+                  "*"
+                ],
+                "allowCredentials": true
+              },
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "pioneers-application-tracker-dev-create-card",
+        "memory": 1024,
+        "runtime": "python3.9",
+        "vpc": {},
+        "versionLogicalId": "CreateDashcardLambdaVersiontMiHDfXBmizHThT0jGJERoouVfyUG2ngJWtrZRmiag"
+      },
+      "edit-card": {
+        "handler": "handlers/application_card/edit_card.lambda_handler",
+        "layers": {
+          "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"EditDashcardLambdaFunction\"][\"Properties\"][\"Layers\"]"
+        },
+        "package": {
+          "exclude": [
+            "./**"
+          ],
+          "include": [
+            "handlers/application_card/edit_card.py"
+          ],
+          "artifact": "C:\\Users\\DELL\\Downloads\\aws_lambdas\\components\\application_tracker\\.serverless\\edit-card.zip"
+        },
+        "timeout": 30,
+        "role": {
+          "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"EditDashcardLambdaFunction\"][\"Properties\"][\"Role\"]"
+        },
+        "events": [
+          {
+            "http": {
+              "path": "user/{user_id}/job/{job_id}",
+              "method": "put",
+              "cors": {
+                "origin": "*",
+                "methods": [
+                  "OPTIONS",
+                  "PUT"
+                ],
+                "headers": [
+                  "*"
+                ],
+                "allowCredentials": true
+              },
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "pioneers-application-tracker-dev-edit-card",
+        "memory": 1024,
+        "runtime": "python3.9",
+        "vpc": {},
+        "versionLogicalId": "EditDashcardLambdaVersionRzSC5lRrCShHZzKWmmrmwuhpACqwgAxP3DfpG2B0QQ"
+      },
+      "delete-card": {
+        "handler": "handlers/application_card/delete_card.lambda_handler",
+        "layers": {
+          "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"DeleteDashcardLambdaFunction\"][\"Properties\"][\"Layers\"]"
+        },
+        "package": {
+          "exclude": [
+            "./**"
+          ],
+          "include": [
+            "handlers/application_card/delete_card.py"
+          ],
+          "artifact": "C:\\Users\\DELL\\Downloads\\aws_lambdas\\components\\application_tracker\\.serverless\\delete-card.zip"
+        },
+        "timeout": 30,
+        "role": {
+          "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"DeleteDashcardLambdaFunction\"][\"Properties\"][\"Role\"]"
+        },
+        "events": [
+          {
+            "http": {
+              "path": "user/{user_id}/job/{job_id}",
+              "method": "delete",
+              "cors": {
+                "origin": "*",
+                "methods": [
+                  "OPTIONS",
+                  "DELETE"
+                ],
+                "headers": [
+                  "*"
+                ],
+                "allowCredentials": true
+              },
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "pioneers-application-tracker-dev-delete-card",
+        "memory": 1024,
+        "runtime": "python3.9",
+        "vpc": {},
+        "versionLogicalId": "DeleteDashcardLambdaVersionvT87Xdxr1FOHw1Qx596b6ddduV6FIkIBc5U1tCQq2Ao"
+      },
+      "get-card": {
+        "handler": "handlers/application_card/get_card.lambda_handler",
+        "layers": {
+          "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"GetDashcardLambdaFunction\"][\"Properties\"][\"Layers\"]"
+        },
+        "package": {
+          "exclude": [
+            "./**"
+          ],
+          "include": [
+            "handlers/application_card/get_card.py"
+          ],
+          "artifact": "C:\\Users\\DELL\\Downloads\\aws_lambdas\\components\\application_tracker\\.serverless\\get-card.zip"
+        },
+        "timeout": 30,
+        "role": {
+          "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"GetDashcardLambdaFunction\"][\"Properties\"][\"Role\"]"
+        },
+        "events": [
+          {
+            "http": {
+              "path": "user/{user_id}/job/{job_id}",
+              "method": "get",
+              "cors": {
+                "origin": "*",
+                "methods": [
+                  "OPTIONS",
+                  "GET"
+                ],
+                "headers": [
+                  "*"
+                ],
+                "allowCredentials": true
+              },
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "pioneers-application-tracker-dev-get-card",
+        "memory": 1024,
+        "runtime": "python3.9",
+        "vpc": {},
+        "versionLogicalId": "GetDashcardLambdaVersionLC1WacPrndFbIaSNJcWE4G0shj814eX5lc1FOYqGGpc"
+      },
+      "list-card": {
+        "handler": "handlers/application_card/list_card.lambda_handler",
+        "layers": {
+          "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"ListDashcardLambdaFunction\"][\"Properties\"][\"Layers\"]"
+        },
+        "package": {
+          "exclude": [
+            "./**"
+          ],
+          "include": [
+            "handlers/application_card/list_card.py"
+          ],
+          "artifact": "C:\\Users\\DELL\\Downloads\\aws_lambdas\\components\\application_tracker\\.serverless\\list-card.zip"
+        },
+        "timeout": 30,
+        "role": {
+          "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"ListDashcardLambdaFunction\"][\"Properties\"][\"Role\"]"
+        },
+        "events": [
+          {
+            "http": {
+              "path": "user/{user_id}/job",
+              "method": "get",
+              "cors": {
+                "origin": "*",
+                "methods": [
+                  "OPTIONS",
+                  "GET"
+                ],
+                "headers": [
+                  "*"
+                ],
+                "allowCredentials": true
+              },
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "pioneers-application-tracker-dev-list-card",
+        "memory": 1024,
+        "runtime": "python3.9",
+        "vpc": {},
+        "versionLogicalId": "ListDashcardLambdaVersionCNcXjcwUBHPpyXEct6B9DdufyvPl7FE9PMrP7beaKI"
+      }
+    },
+    "resources": {
+      "Resources": {
+        "ApplicationTrackerTable": {
+          "Type": "AWS::DynamoDB::Table",
+          "Properties": {
+            "TableName": "application_tracker_cards",
+            "AttributeDefinitions": [
+              {
+                "AttributeName": "id",
+                "AttributeType": "S"
+              },
+              {
+                "AttributeName": "user_id",
+                "AttributeType": "S"
+              },
+              {
+                "AttributeName": "created_time_epoch",
+                "AttributeType": "N"
+              }
+            ],
+            "KeySchema": [
+              {
+                "AttributeName": "id",
+                "KeyType": "HASH"
+              },
+              {
+                "AttributeName": "user_id",
+                "KeyType": "RANGE"
+              }
+            ],
+            "GlobalSecondaryIndexes": [
+              {
+                "IndexName": "user_id_created_time_epoch_index",
+                "KeySchema": [
+                  {
+                    "AttributeName": "user_id",
+                    "KeyType": "HASH"
+                  },
+                  {
+                    "AttributeName": "created_time_epoch",
+                    "KeyType": "RANGE"
+                  }
+                ],
+                "Projection": {
+                  "ProjectionType": "ALL"
+                }
+              }
+            ],
+            "BillingMode": "PAY_PER_REQUEST"
+          }
+        },
+        "LambdaRole": {
+          "Type": "AWS::IAM::Role",
+          "Properties": {
+            "AssumeRolePolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Principal": {
+                    "Service": [
+                      "lambda.amazonaws.com"
+                    ]
+                  },
+                  "Action": [
+                    "sts:AssumeRole"
+                  ]
+                }
+              ]
+            },
+            "Path": "/",
+            "RoleName": "pioneers-application-tracker-dev-role",
+            "Policies": [
+              {
+                "PolicyName": "pioneers-application-tracker-dev-policy",
+                "PolicyDocument": {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                        "logs:CreateLogGroup",
+                        "logs:CreateLogStream",
+                        "logs:PutLogEvents"
+                      ],
+                      "Resource": "*"
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                        "dynamodb:GetItem",
+                        "dynamodb:Query",
+                        "dynamodb:Scan",
+                        "dynamodb:DeleteItem",
+                        "dynamodb:UpdateItem",
+                        "dynamodb:PutItem",
+                        "dynamodb:BatchWriteItem"
+                      ],
+                      "Resource": [
+                        {
+                          "Fn::GetAtt": [
+                            "ApplicationTrackerTable",
+                            "Arn"
+                          ]
+                        },
+                        {
+                          "Fn::Sub": "${ApplicationTrackerTable.Arn}/*"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      },
+      "Outputs": {}
+    },
+    "configValidationMode": "warn",
+    "serviceFilename": "serverless.yml",
+    "initialServerlessConfig": {
+      "service": "pioneers-application-tracker",
+      "frameworkVersion": "3",
+      "useDotenv": true,
+      "package": {
+        "individually": true,
+        "artifactsS3KeyDirname": "serverless/pioneers-application-tracker/dev/code-artifacts",
+        "deploymentBucket": "pioneers-serverless-deployment-bucket-dev-kb",
+        "artifactDirectoryName": "serverless/pioneers-application-tracker/dev/1678855049788-2023-03-15T04:37:29.788Z"
+      },
+      "custom": {
+        "$ref": "$[\"service\"][\"custom\"]"
+      },
+      "plugins": {
+        "$ref": "$[\"service\"][\"plugins\"]"
+      },
+      "provider": {
+        "$ref": "$[\"service\"][\"provider\"]"
+      },
+      "functions": {
+        "$ref": "$[\"service\"][\"functions\"]"
+      },
+      "resources": {
+        "$ref": "$[\"service\"][\"resources\"]"
+      }
+    },
+    "layers": {},
+    "isDashboardMonitoringPreconfigured": false
+  },
+  "package": {
+    "individually": true,
+    "artifactDirectoryName": "serverless/pioneers-application-tracker/dev/1678855049788-2023-03-15T04:37:29.788Z",
+    "artifact": ""
+  }
+}

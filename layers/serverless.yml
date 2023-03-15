@@ -1,0 +1,37 @@
+service: pioneers-layers
+frameworkVersion: '3'
+useDotenv: true
+
+custom:
+  STAGE: ${opt:stage}
+  REGION: ${env:REGION}
+  DEPLOYMENT_BUCKET: ${env:DEPLOYMENT_BUCKET}
+  ACCOUNT_ID: ${AWS::AccountId}
+  PREFIX: ${self:service}-${self:custom.STAGE}
+  
+plugins:
+  - serverless-deployment-bucket
+
+provider:
+  name: aws
+  stage: ${self:custom.STAGE}
+  region: ${self:custom.REGION}
+  deploymentBucket:
+    name: ${self:custom.DEPLOYMENT_BUCKET}
+    serverSideEncryption: AES256
+  runtime: python3.9
+
+layers:
+  authorizer:
+    name: ${self:custom.PREFIX}-authorizer
+    path: authorizer
+    retain: false
+  common:
+    name: ${self:custom.PREFIX}-common
+    path: common
+    retain: false
+
+resources:
+  Outputs:
+    layerPrefix:
+      Value: ${self:custom.PREFIX}

@@ -1,0 +1,31 @@
+services:
+  layers:
+    path: layers
+
+  authorizer:
+    path: authorizer
+    params:
+      LAYER_PREFIX: ${layers.layerPrefix}
+    dependsOn:
+      - layers
+  community:
+    path: components/community
+    params:
+      LAYER_PREFIX: ${layers.layerPrefix}
+      AUTHORIZER_ARN: ${authorizer.authARN}
+    dependsOn:
+      - layers
+  application_tracker:
+    path: components/application_tracker
+    params:
+      LAYER_PREFIX: ${layers.layerPrefix}
+      AUTHORIZER_ARN: ${authorizer.authARN}
+    dependsOn:
+      - layers
+  job_applications:
+    path: components/job_applications
+    params:
+      LAYER_PREFIX: ${layers.layerPrefix}
+      AUTHORIZER_ARN: ${authorizer.authARN}
+    dependsOn:
+      - layers

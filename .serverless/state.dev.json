@@ -1,0 +1,79 @@
+{
+  "service": {
+    "id": "hdj2tv"
+  },
+  "components": {
+    "layers": {
+      "state": {
+        "detectedFrameworkVersion": "3.22.0"
+      },
+      "outputs": {
+        "CommonLambdaLayerQualifiedArn": "arn:aws:lambda:us-east-1:109661032234:layer:pioneers-layers-dev-common:16",
+        "CommonLambdaLayerHash": "c9eb8b6400fb46699aeb99d0c75dd7d52e65efc9",
+        "AuthorizerLambdaLayerHash": "01c26a9f1ce91abc49046cbe4f876b9ad396f91b",
+        "CommonLambdaLayerS3Key": "serverless/pioneers-layers/dev/1678847070695-2023-03-15T02:24:30.695Z/common.zip",
+        "AuthorizerLambdaLayerQualifiedArn": "arn:aws:lambda:us-east-1:109661032234:layer:pioneers-layers-dev-authorizer:2",
+        "AuthorizerLambdaLayerS3Key": "serverless/pioneers-layers/dev/1678847070695-2023-03-15T02:24:30.695Z/authorizer.zip",
+        "layerPrefix": "pioneers-layers-dev",
+        "ServerlessDeploymentBucketName": "pioneers-serverless-deployment-bucket-kb"
+      }
+    },
+    "authorizer": {
+      "state": {
+        "detectedFrameworkVersion": "3.22.0"
+      },
+      "outputs": {
+        "AuthorizerLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:109661032234:function:pioneers-authorizer-dev-authorizer:2",
+        "authARN": "arn:aws:lambda:us-east-1:109661032234:function:pioneers-authorizer-dev-authorizer",
+        "ServerlessDeploymentBucketName": "pioneers-serverless-deployment-bucket-dev-kb"
+      }
+    },
+    "job_applications": {
+      "state": {
+        "detectedFrameworkVersion": "3.22.0"
+      },
+      "outputs": {
+        "CreateDashapplicationLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:109661032234:function:pioneers-job-application-dev-create-application:1",
+        "HelpersLambdaLayerS3Key": "serverless/pioneers-job-application/dev/1678849487676-2023-03-15T03:04:47.676Z/helpers.zip",
+        "HelpersLambdaLayerQualifiedArn": "arn:aws:lambda:us-east-1:109661032234:layer:pioneers-job-application-dev-helpers:9",
+        "HelpersLambdaLayerHash": "c9a8f2e0f0780a00cc70f34875f79e6ae1f88024",
+        "ServiceEndpoint": "https://ixoo5k9w6b.execute-api.us-east-1.amazonaws.com/dev",
+        "ServerlessDeploymentBucketName": "pioneers-serverless-deployment-bucket-dev-kb"
+      }
+    },
+    "community": {
+      "state": {
+        "detectedFrameworkVersion": "3.22.0"
+      },
+      "outputs": {
+        "EditDashpostLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:109661032234:function:pioneers-community-dev-edit-post:1",
+        "CreateDashpostLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:109661032234:function:pioneers-community-dev-create-post:1",
+        "DeleteDashpostLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:109661032234:function:pioneers-community-dev-delete-post:1",
+        "ListDashpostLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:109661032234:function:pioneers-community-dev-list-post:1",
+        "ServerlessDeploymentBucketName": "pioneers-serverless-deployment-bucket-dev-kb",
+        "VoteDashpostLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:109661032234:function:pioneers-community-dev-vote-post:1",
+        "AddDashcommentLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:109661032234:function:pioneers-community-dev-add-comment:1",
+        "GetDashpostLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:109661032234:function:pioneers-community-dev-get-post:1",
+        "EditDashcommentLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:109661032234:function:pioneers-community-dev-edit-comment:1",
+        "GetDashcommentLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:109661032234:function:pioneers-community-dev-get-comment:2",
+        "ListDashcommentLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:109661032234:function:pioneers-community-dev-list-comment:1",
+        "DeleteDashcommentLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:109661032234:function:pioneers-community-dev-delete-comment:2",
+        "ServiceEndpoint": "https://ifavx0ewca.execute-api.us-east-1.amazonaws.com/dev"
+      }
+    },
+    "application_tracker": {
+      "state": {
+        "detectedFrameworkVersion": "3.22.0"
+      },
+      "outputs": {
+        "DeleteDashcardLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:109661032234:function:pioneers-application-tracker-dev-delete-card:2",
+        "CreateDashcardLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:109661032234:function:pioneers-application-tracker-dev-create-card:3",
+        "ListDashcardLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:109661032234:function:pioneers-application-tracker-dev-list-card:3",
+        "EditDashcardLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:109661032234:function:pioneers-application-tracker-dev-edit-card:3",
+        "GetDashcardLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:109661032234:function:pioneers-application-tracker-dev-get-card:3",
+        "ServiceEndpoint": "https://24tn8i4uwa.execute-api.us-east-1.amazonaws.com/dev",
+        "ServerlessDeploymentBucketName": "pioneers-serverless-deployment-bucket-dev-kb"
+      }
+    }
+  }
+}

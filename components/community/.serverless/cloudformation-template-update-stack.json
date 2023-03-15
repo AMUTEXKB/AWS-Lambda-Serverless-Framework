@@ -1,0 +1,2454 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "The AWS CloudFormation template for this Serverless application",
+  "Resources": {
+    "CreateDashpostLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/pioneers-community-dev-create-post"
+      }
+    },
+    "EditDashpostLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/pioneers-community-dev-edit-post"
+      }
+    },
+    "DeleteDashpostLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/pioneers-community-dev-delete-post"
+      }
+    },
+    "GetDashpostLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/pioneers-community-dev-get-post"
+      }
+    },
+    "ListDashpostLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/pioneers-community-dev-list-post"
+      }
+    },
+    "VoteDashpostLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/pioneers-community-dev-vote-post"
+      }
+    },
+    "AddDashcommentLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/pioneers-community-dev-add-comment"
+      }
+    },
+    "EditDashcommentLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/pioneers-community-dev-edit-comment"
+      }
+    },
+    "DeleteDashcommentLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/pioneers-community-dev-delete-comment"
+      }
+    },
+    "GetDashcommentLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/pioneers-community-dev-get-comment"
+      }
+    },
+    "ListDashcommentLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/pioneers-community-dev-list-comment"
+      }
+    },
+    "CreateDashpostLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": "pioneers-serverless-deployment-bucket-dev-kb",
+          "S3Key": "serverless/pioneers-community/dev/1678855051211-2023-03-15T04:37:31.211Z/create-post.zip"
+        },
+        "Handler": "handlers/post/create_post.lambda_handler",
+        "Runtime": "python3.9",
+        "FunctionName": "pioneers-community-dev-create-post",
+        "MemorySize": 1024,
+        "Timeout": 30,
+        "Environment": {
+          "Variables": {
+            "POST_TABLE_NAME": {
+              "Ref": "PostTable"
+            },
+            "COMMENT_TABLE_NAME": {
+              "Ref": "CommentTable"
+            },
+            "USER_TABLE_NAME": "users",
+            "AUTH0_DOMAIN": "your-auth0-domain",
+            "AUTH0_MANAGEMENT_API_SECRET": "your-auth0-management-api-secret",
+            "AUTH0_CLIENT_ID": "your-auth0-client-id",
+            "AUTH0_MANAGEMENT_API_CLIENT_ID": "your-auth0-management-api-client-id"
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaRole",
+            "Arn"
+          ]
+        },
+        "Layers": [
+          "arn:aws:lambda:us-east-1:109661032234:layer:pioneers-layers-dev-common:16"
+        ]
+      },
+      "DependsOn": [
+        "CreateDashpostLogGroup",
+        "LambdaRole"
+      ]
+    },
+    "EditDashpostLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": "pioneers-serverless-deployment-bucket-dev-kb",
+          "S3Key": "serverless/pioneers-community/dev/1678855051211-2023-03-15T04:37:31.211Z/edit-post.zip"
+        },
+        "Handler": "handlers/post/edit_post.lambda_handler",
+        "Runtime": "python3.9",
+        "FunctionName": "pioneers-community-dev-edit-post",
+        "MemorySize": 1024,
+        "Timeout": 30,
+        "Environment": {
+          "Variables": {
+            "POST_TABLE_NAME": {
+              "Ref": "PostTable"
+            },
+            "COMMENT_TABLE_NAME": {
+              "Ref": "CommentTable"
+            },
+            "USER_TABLE_NAME": "users",
+            "AUTH0_DOMAIN": "your-auth0-domain",
+            "AUTH0_MANAGEMENT_API_SECRET": "your-auth0-management-api-secret",
+            "AUTH0_CLIENT_ID": "your-auth0-client-id",
+            "AUTH0_MANAGEMENT_API_CLIENT_ID": "your-auth0-management-api-client-id"
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaRole",
+            "Arn"
+          ]
+        },
+        "Layers": [
+          "arn:aws:lambda:us-east-1:109661032234:layer:pioneers-layers-dev-common:16"
+        ]
+      },
+      "DependsOn": [
+        "EditDashpostLogGroup",
+        "LambdaRole"
+      ]
+    },
+    "DeleteDashpostLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": "pioneers-serverless-deployment-bucket-dev-kb",
+          "S3Key": "serverless/pioneers-community/dev/1678855051211-2023-03-15T04:37:31.211Z/delete-post.zip"
+        },
+        "Handler": "handlers/post/delete_post.lambda_handler",
+        "Runtime": "python3.9",
+        "FunctionName": "pioneers-community-dev-delete-post",
+        "MemorySize": 1024,
+        "Timeout": 30,
+        "Environment": {
+          "Variables": {
+            "POST_TABLE_NAME": {
+              "Ref": "PostTable"
+            },
+            "COMMENT_TABLE_NAME": {
+              "Ref": "CommentTable"
+            },
+            "USER_TABLE_NAME": "users",
+            "AUTH0_DOMAIN": "your-auth0-domain",
+            "AUTH0_MANAGEMENT_API_SECRET": "your-auth0-management-api-secret",
+            "AUTH0_CLIENT_ID": "your-auth0-client-id",
+            "AUTH0_MANAGEMENT_API_CLIENT_ID": "your-auth0-management-api-client-id"
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaRole",
+            "Arn"
+          ]
+        },
+        "Layers": [
+          "arn:aws:lambda:us-east-1:109661032234:layer:pioneers-layers-dev-common:16"
+        ]
+      },
+      "DependsOn": [
+        "DeleteDashpostLogGroup",
+        "LambdaRole"
+      ]
+    },
+    "GetDashpostLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": "pioneers-serverless-deployment-bucket-dev-kb",
+          "S3Key": "serverless/pioneers-community/dev/1678855051211-2023-03-15T04:37:31.211Z/get-post.zip"
+        },
+        "Handler": "handlers/post/get_post.lambda_handler",
+        "Runtime": "python3.9",
+        "FunctionName": "pioneers-community-dev-get-post",
+        "MemorySize": 1024,
+        "Timeout": 30,
+        "Environment": {
+          "Variables": {
+            "POST_TABLE_NAME": {
+              "Ref": "PostTable"
+            },
+            "COMMENT_TABLE_NAME": {
+              "Ref": "CommentTable"
+            },
+            "USER_TABLE_NAME": "users",
+            "AUTH0_DOMAIN": "your-auth0-domain",
+            "AUTH0_MANAGEMENT_API_SECRET": "your-auth0-management-api-secret",
+            "AUTH0_CLIENT_ID": "your-auth0-client-id",
+            "AUTH0_MANAGEMENT_API_CLIENT_ID": "your-auth0-management-api-client-id"
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaRole",
+            "Arn"
+          ]
+        },
+        "Layers": [
+          "arn:aws:lambda:us-east-1:109661032234:layer:pioneers-layers-dev-common:16"
+        ]
+      },
+      "DependsOn": [
+        "GetDashpostLogGroup",
+        "LambdaRole"
+      ]
+    },
+    "ListDashpostLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": "pioneers-serverless-deployment-bucket-dev-kb",
+          "S3Key": "serverless/pioneers-community/dev/1678855051211-2023-03-15T04:37:31.211Z/list-post.zip"
+        },
+        "Handler": "handlers/post/list_post.lambda_handler",
+        "Runtime": "python3.9",
+        "FunctionName": "pioneers-community-dev-list-post",
+        "MemorySize": 1024,
+        "Timeout": 30,
+        "Environment": {
+          "Variables": {
+            "POST_TABLE_NAME": {
+              "Ref": "PostTable"
+            },
+            "COMMENT_TABLE_NAME": {
+              "Ref": "CommentTable"
+            },
+            "USER_TABLE_NAME": "users",
+            "AUTH0_DOMAIN": "your-auth0-domain",
+            "AUTH0_MANAGEMENT_API_SECRET": "your-auth0-management-api-secret",
+            "AUTH0_CLIENT_ID": "your-auth0-client-id",
+            "AUTH0_MANAGEMENT_API_CLIENT_ID": "your-auth0-management-api-client-id"
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaRole",
+            "Arn"
+          ]
+        },
+        "Layers": [
+          "arn:aws:lambda:us-east-1:109661032234:layer:pioneers-layers-dev-common:16"
+        ]
+      },
+      "DependsOn": [
+        "ListDashpostLogGroup",
+        "LambdaRole"
+      ]
+    },
+    "VoteDashpostLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": "pioneers-serverless-deployment-bucket-dev-kb",
+          "S3Key": "serverless/pioneers-community/dev/1678855051211-2023-03-15T04:37:31.211Z/vote-post.zip"
+        },
+        "Handler": "handlers/post/vote_post.lambda_handler",
+        "Runtime": "python3.9",
+        "FunctionName": "pioneers-community-dev-vote-post",
+        "MemorySize": 1024,
+        "Timeout": 30,
+        "Environment": {
+          "Variables": {
+            "POST_TABLE_NAME": {
+              "Ref": "PostTable"
+            },
+            "COMMENT_TABLE_NAME": {
+              "Ref": "CommentTable"
+            },
+            "USER_TABLE_NAME": "users",
+            "AUTH0_DOMAIN": "your-auth0-domain",
+            "AUTH0_MANAGEMENT_API_SECRET": "your-auth0-management-api-secret",
+            "AUTH0_CLIENT_ID": "your-auth0-client-id",
+            "AUTH0_MANAGEMENT_API_CLIENT_ID": "your-auth0-management-api-client-id"
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaRole",
+            "Arn"
+          ]
+        },
+        "Layers": [
+          "arn:aws:lambda:us-east-1:109661032234:layer:pioneers-layers-dev-common:16"
+        ]
+      },
+      "DependsOn": [
+        "VoteDashpostLogGroup",
+        "LambdaRole"
+      ]
+    },
+    "AddDashcommentLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": "pioneers-serverless-deployment-bucket-dev-kb",
+          "S3Key": "serverless/pioneers-community/dev/1678855051211-2023-03-15T04:37:31.211Z/add-comment.zip"
+        },
+        "Handler": "handlers/comment/add_comment.lambda_handler",
+        "Runtime": "python3.9",
+        "FunctionName": "pioneers-community-dev-add-comment",
+        "MemorySize": 1024,
+        "Timeout": 30,
+        "Environment": {
+          "Variables": {
+            "POST_TABLE_NAME": {
+              "Ref": "PostTable"
+            },
+            "COMMENT_TABLE_NAME": {
+              "Ref": "CommentTable"
+            },
+            "USER_TABLE_NAME": "users",
+            "AUTH0_DOMAIN": "your-auth0-domain",
+            "AUTH0_MANAGEMENT_API_SECRET": "your-auth0-management-api-secret",
+            "AUTH0_CLIENT_ID": "your-auth0-client-id",
+            "AUTH0_MANAGEMENT_API_CLIENT_ID": "your-auth0-management-api-client-id"
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaRole",
+            "Arn"
+          ]
+        },
+        "Layers": [
+          "arn:aws:lambda:us-east-1:109661032234:layer:pioneers-layers-dev-common:16"
+        ]
+      },
+      "DependsOn": [
+        "AddDashcommentLogGroup",
+        "LambdaRole"
+      ]
+    },
+    "EditDashcommentLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": "pioneers-serverless-deployment-bucket-dev-kb",
+          "S3Key": "serverless/pioneers-community/dev/1678855051211-2023-03-15T04:37:31.211Z/edit-comment.zip"
+        },
+        "Handler": "handlers/comment/edit_comment.lambda_handler",
+        "Runtime": "python3.9",
+        "FunctionName": "pioneers-community-dev-edit-comment",
+        "MemorySize": 1024,
+        "Timeout": 30,
+        "Environment": {
+          "Variables": {
+            "POST_TABLE_NAME": {
+              "Ref": "PostTable"
+            },
+            "COMMENT_TABLE_NAME": {
+              "Ref": "CommentTable"
+            },
+            "USER_TABLE_NAME": "users",
+            "AUTH0_DOMAIN": "your-auth0-domain",
+            "AUTH0_MANAGEMENT_API_SECRET": "your-auth0-management-api-secret",
+            "AUTH0_CLIENT_ID": "your-auth0-client-id",
+            "AUTH0_MANAGEMENT_API_CLIENT_ID": "your-auth0-management-api-client-id"
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaRole",
+            "Arn"
+          ]
+        },
+        "Layers": [
+          "arn:aws:lambda:us-east-1:109661032234:layer:pioneers-layers-dev-common:16"
+        ]
+      },
+      "DependsOn": [
+        "EditDashcommentLogGroup",
+        "LambdaRole"
+      ]
+    },
+    "DeleteDashcommentLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": "pioneers-serverless-deployment-bucket-dev-kb",
+          "S3Key": "serverless/pioneers-community/dev/1678855051211-2023-03-15T04:37:31.211Z/delete-comment.zip"
+        },
+        "Handler": "handlers/comment/delete_comment.lambda_handler",
+        "Runtime": "python3.9",
+        "FunctionName": "pioneers-community-dev-delete-comment",
+        "MemorySize": 1024,
+        "Timeout": 30,
+        "Environment": {
+          "Variables": {
+            "POST_TABLE_NAME": {
+              "Ref": "PostTable"
+            },
+            "COMMENT_TABLE_NAME": {
+              "Ref": "CommentTable"
+            },
+            "USER_TABLE_NAME": "users",
+            "AUTH0_DOMAIN": "your-auth0-domain",
+            "AUTH0_MANAGEMENT_API_SECRET": "your-auth0-management-api-secret",
+            "AUTH0_CLIENT_ID": "your-auth0-client-id",
+            "AUTH0_MANAGEMENT_API_CLIENT_ID": "your-auth0-management-api-client-id"
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaRole",
+            "Arn"
+          ]
+        },
+        "Layers": [
+          "arn:aws:lambda:us-east-1:109661032234:layer:pioneers-layers-dev-common:16"
+        ]
+      },
+      "DependsOn": [
+        "DeleteDashcommentLogGroup",
+        "LambdaRole"
+      ]
+    },
+    "GetDashcommentLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": "pioneers-serverless-deployment-bucket-dev-kb",
+          "S3Key": "serverless/pioneers-community/dev/1678855051211-2023-03-15T04:37:31.211Z/get-comment.zip"
+        },
+        "Handler": "handlers/comment/get_comment.lambda_handler",
+        "Runtime": "python3.9",
+        "FunctionName": "pioneers-community-dev-get-comment",
+        "MemorySize": 1024,
+        "Timeout": 30,
+        "Environment": {
+          "Variables": {
+            "POST_TABLE_NAME": {
+              "Ref": "PostTable"
+            },
+            "COMMENT_TABLE_NAME": {
+              "Ref": "CommentTable"
+            },
+            "USER_TABLE_NAME": "users",
+            "AUTH0_DOMAIN": "your-auth0-domain",
+            "AUTH0_MANAGEMENT_API_SECRET": "your-auth0-management-api-secret",
+            "AUTH0_CLIENT_ID": "your-auth0-client-id",
+            "AUTH0_MANAGEMENT_API_CLIENT_ID": "your-auth0-management-api-client-id"
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaRole",
+            "Arn"
+          ]
+        },
+        "Layers": [
+          "arn:aws:lambda:us-east-1:109661032234:layer:pioneers-layers-dev-common:16"
+        ]
+      },
+      "DependsOn": [
+        "GetDashcommentLogGroup",
+        "LambdaRole"
+      ]
+    },
+    "ListDashcommentLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": "pioneers-serverless-deployment-bucket-dev-kb",
+          "S3Key": "serverless/pioneers-community/dev/1678855051211-2023-03-15T04:37:31.211Z/list-comment.zip"
+        },
+        "Handler": "handlers/comment/list_comment.lambda_handler",
+        "Runtime": "python3.9",
+        "FunctionName": "pioneers-community-dev-list-comment",
+        "MemorySize": 1024,
+        "Timeout": 30,
+        "Environment": {
+          "Variables": {
+            "POST_TABLE_NAME": {
+              "Ref": "PostTable"
+            },
+            "COMMENT_TABLE_NAME": {
+              "Ref": "CommentTable"
+            },
+            "USER_TABLE_NAME": "users",
+            "AUTH0_DOMAIN": "your-auth0-domain",
+            "AUTH0_MANAGEMENT_API_SECRET": "your-auth0-management-api-secret",
+            "AUTH0_CLIENT_ID": "your-auth0-client-id",
+            "AUTH0_MANAGEMENT_API_CLIENT_ID": "your-auth0-management-api-client-id"
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaRole",
+            "Arn"
+          ]
+        },
+        "Layers": [
+          "arn:aws:lambda:us-east-1:109661032234:layer:pioneers-layers-dev-common:16"
+        ]
+      },
+      "DependsOn": [
+        "ListDashcommentLogGroup",
+        "LambdaRole"
+      ]
+    },
+    "CreateDashpostLambdaVersionpYeUHT1FrYoYAIkrGvaot8dribYp2Zf8PA2emAAgw": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "CreateDashpostLambdaFunction"
+        },
+        "CodeSha256": "/DNgfDKomLJJiOmGrQWUdxiVC1E2pvhiNdfAGnE0+4w="
+      }
+    },
+    "EditDashpostLambdaVersionqMMfsSOTjV8k9jBi87FexCVjd4DP0YeOyrjsO9mMkE": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "EditDashpostLambdaFunction"
+        },
+        "CodeSha256": "/DNgfDKomLJJiOmGrQWUdxiVC1E2pvhiNdfAGnE0+4w="
+      }
+    },
+    "DeleteDashpostLambdaVersionGcmpXRxW4VSfH9aPb15FO4ddBFZ2brE1SEpxr5KQY": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "DeleteDashpostLambdaFunction"
+        },
+        "CodeSha256": "/DNgfDKomLJJiOmGrQWUdxiVC1E2pvhiNdfAGnE0+4w="
+      }
+    },
+    "GetDashpostLambdaVersion8O6ttLF58DaDQHuP1sCVTfx7Q0OO7Juo9kpneKHwBs": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "GetDashpostLambdaFunction"
+        },
+        "CodeSha256": "/DNgfDKomLJJiOmGrQWUdxiVC1E2pvhiNdfAGnE0+4w="
+      }
+    },
+    "ListDashpostLambdaVersionSgNJPwojqjkqlu4eBISBZnRKvMXDuSzNrOeJVc": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "ListDashpostLambdaFunction"
+        },
+        "CodeSha256": "/DNgfDKomLJJiOmGrQWUdxiVC1E2pvhiNdfAGnE0+4w="
+      }
+    },
+    "VoteDashpostLambdaVersionzQDOFrdMsMcHBFBZZxfd7kAx6QwJUqJEbweHNTg9ZA": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "VoteDashpostLambdaFunction"
+        },
+        "CodeSha256": "/DNgfDKomLJJiOmGrQWUdxiVC1E2pvhiNdfAGnE0+4w="
+      }
+    },
+    "AddDashcommentLambdaVersionZsxmlMdbzx6CS6oCk8TowVENt3ZZ0zmrsAjPlQfoB4": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "AddDashcommentLambdaFunction"
+        },
+        "CodeSha256": "/DNgfDKomLJJiOmGrQWUdxiVC1E2pvhiNdfAGnE0+4w="
+      }
+    },
+    "EditDashcommentLambdaVersionhZu8Q7Bx9NtUWKDYbxIIaRbzuuiprmwmiZiZudH12Yc": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "EditDashcommentLambdaFunction"
+        },
+        "CodeSha256": "/DNgfDKomLJJiOmGrQWUdxiVC1E2pvhiNdfAGnE0+4w="
+      }
+    },
+    "DeleteDashcommentLambdaVersionwIy7wmKEQrhR6ZW3SouI0lv5DrF3lT32jHm5tGMSTs": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "DeleteDashcommentLambdaFunction"
+        },
+        "CodeSha256": "/DNgfDKomLJJiOmGrQWUdxiVC1E2pvhiNdfAGnE0+4w="
+      }
+    },
+    "GetDashcommentLambdaVersionv6IMLNKResQnBlIGi1WoCSqYJSF02aXJcoIaWrlWVA0": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "GetDashcommentLambdaFunction"
+        },
+        "CodeSha256": "/DNgfDKomLJJiOmGrQWUdxiVC1E2pvhiNdfAGnE0+4w="
+      }
+    },
+    "ListDashcommentLambdaVersionOUcXT9AJhSHvPeEEtzE0AfKYFWYnu4a5QsDOplRIN4": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "ListDashcommentLambdaFunction"
+        },
+        "CodeSha256": "/DNgfDKomLJJiOmGrQWUdxiVC1E2pvhiNdfAGnE0+4w="
+      }
+    },
+    "ApiGatewayRestApi": {
+      "Type": "AWS::ApiGateway::RestApi",
+      "Properties": {
+        "Name": "dev-pioneers-community",
+        "EndpointConfiguration": {
+          "Types": [
+            "EDGE"
+          ]
+        },
+        "Policy": ""
+      }
+    },
+    "ApiGatewayResourceCommunity": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "ApiGatewayRestApi",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "community",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceCommunityCommunityidVar": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceCommunity"
+        },
+        "PathPart": "{community_id}",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceCommunityCommunityidVarQuestion": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceCommunityCommunityidVar"
+        },
+        "PathPart": "question",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceCommunityCommunityidVarQuestionQuestionidVar": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceCommunityCommunityidVarQuestion"
+        },
+        "PathPart": "{question_id}",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceCommunityCommunityidVarQuestionQuestionidVarVote": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceCommunityCommunityidVarQuestionQuestionidVar"
+        },
+        "PathPart": "vote",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceCommunityCommunityidVarQuestionQuestionidVarAnswer": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceCommunityCommunityidVarQuestionQuestionidVar"
+        },
+        "PathPart": "answer",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceCommunityCommunityidVarQuestionQuestionidVarAnswerAnsweridVar": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceCommunityCommunityidVarQuestionQuestionidVarAnswer"
+        },
+        "PathPart": "{answer_id}",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceQuestion": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "ApiGatewayRestApi",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "question",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceQuestionQuestionidVar": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceQuestion"
+        },
+        "PathPart": "{question_id}",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceQuestionQuestionidVarAnswer": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceQuestionQuestionidVar"
+        },
+        "PathPart": "answer",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceQuestionQuestionidVarAnswerAnsweridVar": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceQuestionQuestionidVarAnswer"
+        },
+        "PathPart": "{answer_id}",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodCommunityCommunityidVarQuestionOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Credentials": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "ContentHandling": "CONVERT_TO_TEXT",
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'*'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,POST'",
+                "method.response.header.Access-Control-Allow-Credentials": "'true'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceCommunityCommunityidVarQuestion"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodCommunityCommunityidVarQuestionQuestionidVarOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Credentials": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "ContentHandling": "CONVERT_TO_TEXT",
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'*'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,DELETE,PUT'",
+                "method.response.header.Access-Control-Allow-Credentials": "'true'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceCommunityCommunityidVarQuestionQuestionidVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodCommunityCommunityidVarQuestionQuestionidVarVoteOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Credentials": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "ContentHandling": "CONVERT_TO_TEXT",
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'*'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,PUT'",
+                "method.response.header.Access-Control-Allow-Credentials": "'true'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceCommunityCommunityidVarQuestionQuestionidVarVote"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodCommunityCommunityidVarQuestionQuestionidVarAnswerOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Credentials": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "ContentHandling": "CONVERT_TO_TEXT",
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'*'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'",
+                "method.response.header.Access-Control-Allow-Credentials": "'true'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceCommunityCommunityidVarQuestionQuestionidVarAnswer"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodQuestionQuestionidVarAnswerAnsweridVarOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Credentials": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "ContentHandling": "CONVERT_TO_TEXT",
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'*'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT'",
+                "method.response.header.Access-Control-Allow-Credentials": "'true'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceQuestionQuestionidVarAnswerAnsweridVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodCommunityCommunityidVarQuestionQuestionidVarAnswerAnsweridVarOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Credentials": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "ContentHandling": "CONVERT_TO_TEXT",
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'*'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,DELETE'",
+                "method.response.header.Access-Control-Allow-Credentials": "'true'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceCommunityCommunityidVarQuestionQuestionidVarAnswerAnsweridVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodQuestionQuestionidVarAnswerOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Credentials": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "ContentHandling": "CONVERT_TO_TEXT",
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'*'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'",
+                "method.response.header.Access-Control-Allow-Credentials": "'true'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceQuestionQuestionidVarAnswer"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodCommunityCommunityidVarQuestionPost": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceCommunityCommunityidVarQuestion"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthorizerApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "CreateDashpostLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthorizerApiGatewayAuthorizer"
+    },
+    "ApiGatewayMethodCommunityCommunityidVarQuestionQuestionidVarPut": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "PUT",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceCommunityCommunityidVarQuestionQuestionidVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthorizerApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "EditDashpostLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthorizerApiGatewayAuthorizer"
+    },
+    "ApiGatewayMethodCommunityCommunityidVarQuestionQuestionidVarDelete": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "DELETE",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceCommunityCommunityidVarQuestionQuestionidVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthorizerApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "DeleteDashpostLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthorizerApiGatewayAuthorizer"
+    },
+    "ApiGatewayMethodCommunityCommunityidVarQuestionQuestionidVarGet": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "GET",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceCommunityCommunityidVarQuestionQuestionidVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthorizerApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "GetDashpostLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthorizerApiGatewayAuthorizer"
+    },
+    "ApiGatewayMethodCommunityCommunityidVarQuestionGet": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "GET",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceCommunityCommunityidVarQuestion"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "ListDashpostLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": [
+        "ListDashpostLambdaPermissionApiGateway"
+      ]
+    },
+    "ApiGatewayMethodCommunityCommunityidVarQuestionQuestionidVarVotePut": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "PUT",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceCommunityCommunityidVarQuestionQuestionidVarVote"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthorizerApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "VoteDashpostLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthorizerApiGatewayAuthorizer"
+    },
+    "ApiGatewayMethodCommunityCommunityidVarQuestionQuestionidVarAnswerPost": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceCommunityCommunityidVarQuestionQuestionidVarAnswer"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthorizerApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "AddDashcommentLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthorizerApiGatewayAuthorizer"
+    },
+    "ApiGatewayMethodQuestionQuestionidVarAnswerAnsweridVarPut": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "PUT",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceQuestionQuestionidVarAnswerAnsweridVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthorizerApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "EditDashcommentLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthorizerApiGatewayAuthorizer"
+    },
+    "ApiGatewayMethodCommunityCommunityidVarQuestionQuestionidVarAnswerAnsweridVarDelete": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "DELETE",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceCommunityCommunityidVarQuestionQuestionidVarAnswerAnsweridVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthorizerApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "DeleteDashcommentLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthorizerApiGatewayAuthorizer"
+    },
+    "ApiGatewayMethodQuestionQuestionidVarAnswerAnsweridVarGet": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "GET",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceQuestionQuestionidVarAnswerAnsweridVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "GetDashcommentLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": [
+        "GetDashcommentLambdaPermissionApiGateway"
+      ]
+    },
+    "ApiGatewayMethodQuestionQuestionidVarAnswerGet": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "GET",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceQuestionQuestionidVarAnswer"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "ListDashcommentLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": [
+        "ListDashcommentLambdaPermissionApiGateway"
+      ]
+    },
+    "AuthorizerApiGatewayAuthorizer": {
+      "Type": "AWS::ApiGateway::Authorizer",
+      "Properties": {
+        "AuthorizerResultTtlInSeconds": 0,
+        "IdentitySource": "method.request.header.Authorization",
+        "Name": "authorizer",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "AuthorizerUri": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":apigateway:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":lambda:path/2015-03-31/functions/",
+              "arn:aws:lambda:us-east-1:109661032234:function:pioneers-authorizer-dev-authorizer",
+              "/invocations"
+            ]
+          ]
+        },
+        "Type": "TOKEN"
+      }
+    },
+    "ApiGatewayDeployment1678855038974": {
+      "Type": "AWS::ApiGateway::Deployment",
+      "Properties": {
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "StageName": "dev"
+      },
+      "DependsOn": [
+        "ApiGatewayMethodCommunityCommunityidVarQuestionOptions",
+        "ApiGatewayMethodCommunityCommunityidVarQuestionQuestionidVarOptions",
+        "ApiGatewayMethodCommunityCommunityidVarQuestionQuestionidVarVoteOptions",
+        "ApiGatewayMethodCommunityCommunityidVarQuestionQuestionidVarAnswerOptions",
+        "ApiGatewayMethodQuestionQuestionidVarAnswerAnsweridVarOptions",
+        "ApiGatewayMethodCommunityCommunityidVarQuestionQuestionidVarAnswerAnsweridVarOptions",
+        "ApiGatewayMethodQuestionQuestionidVarAnswerOptions",
+        "ApiGatewayMethodCommunityCommunityidVarQuestionPost",
+        "ApiGatewayMethodCommunityCommunityidVarQuestionQuestionidVarPut",
+        "ApiGatewayMethodCommunityCommunityidVarQuestionQuestionidVarDelete",
+        "ApiGatewayMethodCommunityCommunityidVarQuestionQuestionidVarGet",
+        "ApiGatewayMethodCommunityCommunityidVarQuestionGet",
+        "ApiGatewayMethodCommunityCommunityidVarQuestionQuestionidVarVotePut",
+        "ApiGatewayMethodCommunityCommunityidVarQuestionQuestionidVarAnswerPost",
+        "ApiGatewayMethodQuestionQuestionidVarAnswerAnsweridVarPut",
+        "ApiGatewayMethodCommunityCommunityidVarQuestionQuestionidVarAnswerAnsweridVarDelete",
+        "ApiGatewayMethodQuestionQuestionidVarAnswerAnsweridVarGet",
+        "ApiGatewayMethodQuestionQuestionidVarAnswerGet"
+      ]
+    },
+    "CreateDashpostLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "CreateDashpostLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "AuthorizerLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": "arn:aws:lambda:us-east-1:109661032234:function:pioneers-authorizer-dev-authorizer",
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "EditDashpostLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "EditDashpostLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "DeleteDashpostLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "DeleteDashpostLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "GetDashpostLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "GetDashpostLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "ListDashpostLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ListDashpostLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "VoteDashpostLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "VoteDashpostLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "AddDashcommentLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "AddDashcommentLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "EditDashcommentLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "EditDashcommentLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "DeleteDashcommentLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "DeleteDashcommentLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "GetDashcommentLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "GetDashcommentLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "ListDashcommentLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "ListDashcommentLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
+    },
+    "PostTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "community_posts",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "community_id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "created_time_epoch",
+            "AttributeType": "N"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "community_id",
+            "KeyType": "RANGE"
+          }
+        ],
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "community_id_created_time_epoch_index",
+            "KeySchema": [
+              {
+                "AttributeName": "community_id",
+                "KeyType": "HASH"
+              },
+              {
+                "AttributeName": "created_time_epoch",
+                "KeyType": "RANGE"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          }
+        ],
+        "BillingMode": "PAY_PER_REQUEST"
+      }
+    },
+    "CommentTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "community_comments",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "post_id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "created_time_epoch",
+            "AttributeType": "N"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "post_id",
+            "KeyType": "RANGE"
+          }
+        ],
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "post_id_created_time_epoch_index",
+            "KeySchema": [
+              {
+                "AttributeName": "post_id",
+                "KeyType": "HASH"
+              },
+              {
+                "AttributeName": "created_time_epoch",
+                "KeyType": "RANGE"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          }
+        ],
+        "BillingMode": "PAY_PER_REQUEST"
+      }
+    },
+    "LambdaRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Path": "/",
+        "RoleName": "pioneers-community-dev-role",
+        "Policies": [
+          {
+            "PolicyName": "pioneers-community-dev-policy",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": "*"
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:GetItem",
+                    "dynamodb:Query",
+                    "dynamodb:Scan",
+                    "dynamodb:DeleteItem",
+                    "dynamodb:UpdateItem",
+                    "dynamodb:PutItem",
+                    "dynamodb:BatchWriteItem"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::GetAtt": [
+                        "PostTable",
+                        "Arn"
+                      ]
+                    },
+                    {
+                      "Fn::Sub": "${PostTable.Arn}/*"
+                    },
+                    {
+                      "Fn::GetAtt": [
+                        "CommentTable",
+                        "Arn"
+                      ]
+                    },
+                    {
+                      "Fn::Sub": "${CommentTable.Arn}/*"
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:GetItem",
+                    "dynamodb:Query",
+                    "dynamodb:Scan",
+                    "dynamodb:UpdateItem",
+                    "dynamodb:PutItem"
+                  ],
+                  "Resource": [
+                    "arn:aws:dynamodb:us-east-1:*:table/users",
+                    "arn:aws:dynamodb:us-east-1:*:table/users/*"
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "Outputs": {
+    "ServerlessDeploymentBucketName": {
+      "Value": "pioneers-serverless-deployment-bucket-dev-kb",
+      "Export": {
+        "Name": "sls-pioneers-community-dev-ServerlessDeploymentBucketName"
+      }
+    },
+    "CreateDashpostLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "CreateDashpostLambdaVersionpYeUHT1FrYoYAIkrGvaot8dribYp2Zf8PA2emAAgw"
+      },
+      "Export": {
+        "Name": "sls-pioneers-community-dev-CreateDashpostLambdaFunctionQualifiedArn"
+      }
+    },
+    "EditDashpostLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "EditDashpostLambdaVersionqMMfsSOTjV8k9jBi87FexCVjd4DP0YeOyrjsO9mMkE"
+      },
+      "Export": {
+        "Name": "sls-pioneers-community-dev-EditDashpostLambdaFunctionQualifiedArn"
+      }
+    },
+    "DeleteDashpostLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "DeleteDashpostLambdaVersionGcmpXRxW4VSfH9aPb15FO4ddBFZ2brE1SEpxr5KQY"
+      },
+      "Export": {
+        "Name": "sls-pioneers-community-dev-DeleteDashpostLambdaFunctionQualifiedArn"
+      }
+    },
+    "GetDashpostLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "GetDashpostLambdaVersion8O6ttLF58DaDQHuP1sCVTfx7Q0OO7Juo9kpneKHwBs"
+      },
+      "Export": {
+        "Name": "sls-pioneers-community-dev-GetDashpostLambdaFunctionQualifiedArn"
+      }
+    },
+    "ListDashpostLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "ListDashpostLambdaVersionSgNJPwojqjkqlu4eBISBZnRKvMXDuSzNrOeJVc"
+      },
+      "Export": {
+        "Name": "sls-pioneers-community-dev-ListDashpostLambdaFunctionQualifiedArn"
+      }
+    },
+    "VoteDashpostLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "VoteDashpostLambdaVersionzQDOFrdMsMcHBFBZZxfd7kAx6QwJUqJEbweHNTg9ZA"
+      },
+      "Export": {
+        "Name": "sls-pioneers-community-dev-VoteDashpostLambdaFunctionQualifiedArn"
+      }
+    },
+    "AddDashcommentLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "AddDashcommentLambdaVersionZsxmlMdbzx6CS6oCk8TowVENt3ZZ0zmrsAjPlQfoB4"
+      },
+      "Export": {
+        "Name": "sls-pioneers-community-dev-AddDashcommentLambdaFunctionQualifiedArn"
+      }
+    },
+    "EditDashcommentLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "EditDashcommentLambdaVersionhZu8Q7Bx9NtUWKDYbxIIaRbzuuiprmwmiZiZudH12Yc"
+      },
+      "Export": {
+        "Name": "sls-pioneers-community-dev-EditDashcommentLambdaFunctionQualifiedArn"
+      }
+    },
+    "DeleteDashcommentLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "DeleteDashcommentLambdaVersionwIy7wmKEQrhR6ZW3SouI0lv5DrF3lT32jHm5tGMSTs"
+      },
+      "Export": {
+        "Name": "sls-pioneers-community-dev-DeleteDashcommentLambdaFunctionQualifiedArn"
+      }
+    },
+    "GetDashcommentLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "GetDashcommentLambdaVersionv6IMLNKResQnBlIGi1WoCSqYJSF02aXJcoIaWrlWVA0"
+      },
+      "Export": {
+        "Name": "sls-pioneers-community-dev-GetDashcommentLambdaFunctionQualifiedArn"
+      }
+    },
+    "ListDashcommentLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "ListDashcommentLambdaVersionOUcXT9AJhSHvPeEEtzE0AfKYFWYnu4a5QsDOplRIN4"
+      },
+      "Export": {
+        "Name": "sls-pioneers-community-dev-ListDashcommentLambdaFunctionQualifiedArn"
+      }
+    },
+    "ServiceEndpoint": {
+      "Description": "URL of the service endpoint",
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://",
+            {
+              "Ref": "ApiGatewayRestApi"
+            },
+            ".execute-api.",
+            {
+              "Ref": "AWS::Region"
+            },
+            ".",
+            {
+              "Ref": "AWS::URLSuffix"
+            },
+            "/dev"
+          ]
+        ]
+      },
+      "Export": {
+        "Name": "sls-pioneers-community-dev-ServiceEndpoint"
+      }
+    }
+  }
+}

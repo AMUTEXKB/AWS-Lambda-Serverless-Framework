@@ -1,0 +1,93 @@
+service: pioneers-authorizer
+frameworkVersion: '3'
+useDotenv: true
+
+package:
+  individually: True
+
+custom:
+  STAGE: ${opt:stage}
+  REGION: ${env:REGION}
+  DEPLOYMENT_BUCKET: ${env:DEPLOYMENT_BUCKET}
+  ACCOUNT_ID: ${AWS::AccountId}
+  PREFIX: ${self:service}-${self:custom.STAGE}
+  LAYER_PREFIX: ${param:LAYER_PREFIX}
+  serverlessSsmFetch:
+    AUTH0_DOMAIN: /pioneer-community/${self:custom.STAGE}/auth0_domain~true
+    AUTH0_CLIENT_ID: /pioneer-community/${self:custom.STAGE}/auth0_client_id~true
+    AUTH0_MANAGEMENT_API_CLIENT_ID: /pioneer-community/${self:custom.STAGE}/auth0_management_api_client_id~true
+    AUTH0_MANAGEMENT_API_SECRET: /pioneer-community/${self:custom.STAGE}/auth0_management_api_secret~true
+
+plugins:
+  - serverless-deployment-bucket
+  - serverless-ssm-fetch
+  - serverless-latest-layer-version
+
+provider:
+  name: aws
+  stage: ${self:custom.STAGE}
+  region: ${self:custom.REGION}
+  deploymentBucket:
+    name: ${self:custom.DEPLOYMENT_BUCKET}
+    serverSideEncryption: AES256
+  runtime: python3.9
+  environment:
+    USER_TABLE_NAME: users
+
+functions:
+  authorizer:
+    handler: authorizer.lambda_handler
+    package:
+      exclude:
+      - "./**"
+      include:
+      - "authorizer.py"
+      - "auth_gateway_response_helper.py"
+    ssmToEnvironment:
+      - AUTH0_DOMAIN
+      - AUTH0_CLIENT_ID
+      - AUTH0_MANAGEMENT_API_CLIENT_ID
+      - AUTH0_MANAGEMENT_API_SECRET
+    layers:
+      - arn:aws:lambda:${self:custom.REGION}:#{AWS::AccountId}:layer:${self:custom.LAYER_PREFIX}-authorizer:latest
+resources:
+  Resources:
+    LambdaRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+              -   Effect: Allow
+                  Principal:
+                      Service:
+                      - lambda.amazonaws.com
+                  Action:
+                  - sts:AssumeRole
+        Path: "/"
+        RoleName: ${self:custom.PREFIX}-role
+        Policies:
+          - PolicyName: ${self:custom.PREFIX}-policy
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                -   Effect: Allow
+                    Action:
+                    - logs:CreateLogGroup
+                    - logs:CreateLogStream
+                    - logs:PutLogEvents
+                    Resource: '*'
+                -   Effect: Allow
+                    Action:
+                      - dynamodb:GetItem
+                      - dynamodb:Query
+                      - dynamodb:Scan
+                      - dynamodb:UpdateItem
+                      - dynamodb:PutItem
+                    Resource:
+                    - arn:aws:dynamodb:${self:custom.REGION}:*:table/users
+                    - arn:aws:dynamodb:${self:custom.REGION}:*:table/users/*
+
+  Outputs:
+    authARN:
+      Value: !GetAtt AuthorizerLambdaFunction.Arn

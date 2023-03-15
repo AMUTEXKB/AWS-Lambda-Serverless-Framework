@@ -1,0 +1,148 @@
+
+Deploying to stage dev
+layers › waiting
+authorizer › waiting
+community › waiting
+application_tracker › waiting
+job_applications › waiting
+layers › deploying
+layers › Running "serverless deploy --stage dev"
+layers › Running "serverless" from node_modules
+layers › Deploying pioneers-layers to stage dev (us-east-1)
+layers › Using deployment bucket 'pioneers-serverless-deployment-bucket-kb'
+layers › Using deployment bucket 'pioneers-serverless-deployment-bucket-kb'
+layers › Change set did not include any changes to be deployed. (42s)
+layers › Running "serverless info --verbose --stage dev"
+layers › Running "serverless" from node_modules
+layers › service: pioneers-layers
+layers › stage: dev
+layers › region: us-east-1
+layers › stack: pioneers-layers-dev
+layers › layers:
+layers ›   authorizer: arn:aws:lambda:us-east-1:109661032234:layer:pioneers-layers-dev-authorizer:2
+layers ›   common: arn:aws:lambda:us-east-1:109661032234:layer:pioneers-layers-dev-common:16
+layers › 
+layers › Stack Outputs:
+layers ›   CommonLambdaLayerQualifiedArn: arn:aws:lambda:us-east-1:109661032234:layer:pioneers-layers-dev-common:16
+layers ›   CommonLambdaLayerHash: c9eb8b6400fb46699aeb99d0c75dd7d52e65efc9
+layers ›   AuthorizerLambdaLayerHash: 01c26a9f1ce91abc49046cbe4f876b9ad396f91b
+layers ›   CommonLambdaLayerS3Key: serverless/pioneers-layers/dev/1678847070695-2023-03-15T02:24:30.695Z/common.zip
+layers ›   AuthorizerLambdaLayerQualifiedArn: arn:aws:lambda:us-east-1:109661032234:layer:pioneers-layers-dev-authorizer:2
+layers ›   AuthorizerLambdaLayerS3Key: serverless/pioneers-layers/dev/1678847070695-2023-03-15T02:24:30.695Z/authorizer.zip
+layers ›   layerPrefix: pioneers-layers-dev
+layers ›   ServerlessDeploymentBucketName: pioneers-serverless-deployment-bucket-kb
+layers › deployed
+authorizer › deploying
+authorizer › Running "serverless deploy --stage dev --param LAYER_PREFIX=pioneers-layers-dev"
+authorizer › Running "serverless" from node_modules
+authorizer › Deploying pioneers-authorizer to stage dev (us-east-1)
+authorizer › Using deployment bucket 'pioneers-serverless-deployment-bucket-dev-kb'
+authorizer › Deploying pioneers-authorizer to stage dev (us-east-1)
+authorizer › ✔ Service deployed to stack pioneers-authorizer-dev (1s)
+authorizer › [serverless-latest-layer-version] Resolved arn:aws:lambda:us-east-1:#{AWS::AccountId}:layer:pioneers-layers-dev-authorizer:latest to arn:aws:lambda:us-east-1:109661032234:layer:pioneers-layers-dev-authorizer:2
+authorizer › Using deployment bucket 'pioneers-serverless-deployment-bucket-dev-kb'
+authorizer › No changes to deploy. Deployment skipped. (23s)
+authorizer › 1 deprecation found: run 'serverless doctor' for more details
+authorizer › no changes
+community › deploying
+application_tracker › deploying
+job_applications › deploying
+community › Running "serverless deploy --stage dev --param LAYER_PREFIX=pioneers-layers-dev --param AUTHORIZER_ARN=arn:aws:lambda:us-east-1:109661032234:function:pioneers-authorizer-dev-authorizer"
+application_tracker › Running "serverless deploy --stage dev --param LAYER_PREFIX=pioneers-layers-dev --param AUTHORIZER_ARN=arn:aws:lambda:us-east-1:109661032234:function:pioneers-authorizer-dev-authorizer"
+job_applications › Running "serverless deploy --stage dev --param LAYER_PREFIX=pioneers-layers-dev --param AUTHORIZER_ARN=arn:aws:lambda:us-east-1:109661032234:function:pioneers-authorizer-dev-authorizer"
+community › Running "serverless" from node_modules
+application_tracker › Running "serverless" from node_modules
+job_applications › Running "serverless" from node_modules
+community › Deploying pioneers-community to stage dev (us-east-1)
+application_tracker › Deploying pioneers-application-tracker to stage dev (us-east-1)
+job_applications › Deploying pioneers-job-application to stage dev (us-east-1)
+job_applications › Using deployment bucket 'pioneers-serverless-deployment-bucket-dev-kb'
+community › Using deployment bucket 'pioneers-serverless-deployment-bucket-dev-kb'
+application_tracker › Using deployment bucket 'pioneers-serverless-deployment-bucket-dev-kb'
+community › Deploying pioneers-community to stage dev (us-east-1)
+community › ✔ Service deployed to stack pioneers-community-dev (1s)
+application_tracker › [serverless-latest-layer-version] Resolved arn:aws:lambda:us-east-1:#{AWS::AccountId}:layer:pioneers-layers-dev-common:latest to arn:aws:lambda:us-east-1:109661032234:layer:pioneers-layers-dev-common:16
+application_tracker › Using deployment bucket 'pioneers-serverless-deployment-bucket-dev-kb'
+community › [serverless-latest-layer-version] Resolved arn:aws:lambda:us-east-1:#{AWS::AccountId}:layer:pioneers-layers-dev-common:latest to arn:aws:lambda:us-east-1:109661032234:layer:pioneers-layers-dev-common:16
+job_applications › [serverless-latest-layer-version] Resolved arn:aws:lambda:us-east-1:#{AWS::AccountId}:layer:pioneers-layers-dev-common:latest to arn:aws:lambda:us-east-1:109661032234:layer:pioneers-layers-dev-common:16
+job_applications › Using deployment bucket 'pioneers-serverless-deployment-bucket-dev-kb'
+community › Using deployment bucket 'pioneers-serverless-deployment-bucket-dev-kb'
+job_applications › No changes to deploy. Deployment skipped. (30s)
+job_applications › 1 deprecation found: run 'serverless doctor' for more details
+application_tracker › No changes to deploy. Deployment skipped. (31s)
+application_tracker › 1 deprecation found: run 'serverless doctor' for more details
+job_applications › no changes
+application_tracker › no changes
+community › ✔ Service deployed to stack pioneers-community-dev (175s)
+community › endpoints:
+community ›   POST - https://ifavx0ewca.execute-api.us-east-1.amazonaws.com/dev/community/{community_id}/question
+community ›   PUT - https://ifavx0ewca.execute-api.us-east-1.amazonaws.com/dev/community/{community_id}/question/{question_id}
+community ›   DELETE - https://ifavx0ewca.execute-api.us-east-1.amazonaws.com/dev/community/{community_id}/question/{question_id}
+community ›   GET - https://ifavx0ewca.execute-api.us-east-1.amazonaws.com/dev/community/{community_id}/question/{question_id}
+community ›   GET - https://ifavx0ewca.execute-api.us-east-1.amazonaws.com/dev/community/{community_id}/question
+community ›   PUT - https://ifavx0ewca.execute-api.us-east-1.amazonaws.com/dev/community/{community_id}/question/{question_id}/vote
+community ›   POST - https://ifavx0ewca.execute-api.us-east-1.amazonaws.com/dev/community/{community_id}/question/{question_id}/answer
+community ›   PUT - https://ifavx0ewca.execute-api.us-east-1.amazonaws.com/dev/question/{question_id}/answer/{answer_id}
+community ›   DELETE - https://ifavx0ewca.execute-api.us-east-1.amazonaws.com/dev/community/{community_id}/question/{question_id}/answer/{answer_id}
+community ›   GET - https://ifavx0ewca.execute-api.us-east-1.amazonaws.com/dev/question/{question_id}/answer/{answer_id}
+community ›   GET - https://ifavx0ewca.execute-api.us-east-1.amazonaws.com/dev/question/{question_id}/answer
+community › functions:
+community ›   create-post: pioneers-community-dev-create-post (11 kB)
+community ›   edit-post: pioneers-community-dev-edit-post (11 kB)
+community ›   delete-post: pioneers-community-dev-delete-post (11 kB)
+community ›   get-post: pioneers-community-dev-get-post (11 kB)
+community ›   list-post: pioneers-community-dev-list-post (11 kB)
+community ›   vote-post: pioneers-community-dev-vote-post (11 kB)
+community ›   add-comment: pioneers-community-dev-add-comment (11 kB)
+community ›   edit-comment: pioneers-community-dev-edit-comment (11 kB)
+community ›   delete-comment: pioneers-community-dev-delete-comment (11 kB)
+community ›   get-comment: pioneers-community-dev-get-comment (11 kB)
+community ›   list-comment: pioneers-community-dev-list-comment (11 kB)
+community › 1 deprecation found: run 'serverless doctor' for more details
+community › Running "serverless info --verbose --stage dev --param LAYER_PREFIX=pioneers-layers-dev --param AUTHORIZER_ARN=arn:aws:lambda:us-east-1:109661032234:function:pioneers-authorizer-dev-authorizer"
+community › Running "serverless" from node_modules
+community › service: pioneers-community
+community › stage: dev
+community › region: us-east-1
+community › stack: pioneers-community-dev
+community › endpoints:
+community ›   POST - https://ifavx0ewca.execute-api.us-east-1.amazonaws.com/dev/community/{community_id}/question
+community ›   PUT - https://ifavx0ewca.execute-api.us-east-1.amazonaws.com/dev/community/{community_id}/question/{question_id}
+community ›   DELETE - https://ifavx0ewca.execute-api.us-east-1.amazonaws.com/dev/community/{community_id}/question/{question_id}
+community ›   GET - https://ifavx0ewca.execute-api.us-east-1.amazonaws.com/dev/community/{community_id}/question/{question_id}
+community ›   GET - https://ifavx0ewca.execute-api.us-east-1.amazonaws.com/dev/community/{community_id}/question
+community ›   PUT - https://ifavx0ewca.execute-api.us-east-1.amazonaws.com/dev/community/{community_id}/question/{question_id}/vote
+community ›   POST - https://ifavx0ewca.execute-api.us-east-1.amazonaws.com/dev/community/{community_id}/question/{question_id}/answer
+community ›   PUT - https://ifavx0ewca.execute-api.us-east-1.amazonaws.com/dev/question/{question_id}/answer/{answer_id}
+community ›   DELETE - https://ifavx0ewca.execute-api.us-east-1.amazonaws.com/dev/community/{community_id}/question/{question_id}/answer/{answer_id}
+community ›   GET - https://ifavx0ewca.execute-api.us-east-1.amazonaws.com/dev/question/{question_id}/answer/{answer_id}
+community ›   GET - https://ifavx0ewca.execute-api.us-east-1.amazonaws.com/dev/question/{question_id}/answer
+community › functions:
+community ›   create-post: pioneers-community-dev-create-post
+community ›   edit-post: pioneers-community-dev-edit-post
+community ›   delete-post: pioneers-community-dev-delete-post
+community ›   get-post: pioneers-community-dev-get-post
+community ›   list-post: pioneers-community-dev-list-post
+community ›   vote-post: pioneers-community-dev-vote-post
+community ›   add-comment: pioneers-community-dev-add-comment
+community ›   edit-comment: pioneers-community-dev-edit-comment
+community ›   delete-comment: pioneers-community-dev-delete-comment
+community ›   get-comment: pioneers-community-dev-get-comment
+community ›   list-comment: pioneers-community-dev-list-comment
+community › 
+community › Stack Outputs:
+community ›   EditDashpostLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-1:109661032234:function:pioneers-community-dev-edit-post:1
+community ›   CreateDashpostLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-1:109661032234:function:pioneers-community-dev-create-post:1
+community ›   DeleteDashpostLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-1:109661032234:function:pioneers-community-dev-delete-post:1
+community ›   ListDashpostLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-1:109661032234:function:pioneers-community-dev-list-post:1
+community ›   ServerlessDeploymentBucketName: pioneers-serverless-deployment-bucket-dev-kb
+community ›   VoteDashpostLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-1:109661032234:function:pioneers-community-dev-vote-post:1
+community ›   AddDashcommentLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-1:109661032234:function:pioneers-community-dev-add-comment:1
+community ›   GetDashpostLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-1:109661032234:function:pioneers-community-dev-get-post:1
+community ›   EditDashcommentLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-1:109661032234:function:pioneers-community-dev-edit-comment:1
+community ›   GetDashcommentLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-1:109661032234:function:pioneers-community-dev-get-comment:2
+community ›   ListDashcommentLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-1:109661032234:function:pioneers-community-dev-list-comment:1
+community ›   DeleteDashcommentLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-1:109661032234:function:pioneers-community-dev-delete-comment:2
+community ›   ServiceEndpoint: https://ifavx0ewca.execute-api.us-east-1.amazonaws.com/dev
+community › 1 deprecation found: run 'serverless doctor' for more details
+community › deployed
